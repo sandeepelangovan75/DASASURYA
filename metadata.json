@@ -1,0 +1,6 @@
+{
+  "name": "SAN_R-10 — DASASURYA",
+  "description": "10-Head Adaptive Intelligence & Life Architecture System providing structured book-style learning, Socratic mentoring, and multi-perspective problem analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
