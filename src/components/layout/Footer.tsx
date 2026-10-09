@@ -12,23 +12,32 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Disclaimers & Ethics row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 p-4 rounded-xl bg-white/[0.02] border border-white/[0.05]">
           <div className="space-y-1.5">
             <div className="flex items-center gap-1.5 text-amber-400 font-medium">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Wealth & Creation Safety Notice</span>
+              <span>Wealth & Creation Notice</span>
             </div>
             <p className="text-slate-400 text-[11px] leading-relaxed">
-              Educational content under Head 02 is strictly for financial literacy, skill acquisition, and ethical value creation. SAN_R-10 never provides financial advice, speculative tips, or guaranteed income claims.
+              Educational content under Head 02 is strictly for financial literacy and ethical value creation. SAN_R-10 never provides financial advice, speculative tips, or guaranteed income claims.
             </p>
           </div>
           <div className="space-y-1.5">
             <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
               <Info className="w-3.5 h-3.5" />
-              <span>Vitality & Health Safety Notice</span>
+              <span>Vitality & Chakra Wellness</span>
             </div>
             <p className="text-slate-400 text-[11px] leading-relaxed">
-              Physical fitness and biological pacing modules provide evidence-based educational habits. They do not replace licensed medical or psychiatric diagnoses.
+              The CHAKRA Alignment and Vitality modules offer traditional contemplative relaxation and mindful breathing. They do not diagnose or treat medical conditions.
+            </p>
+          </div>
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-1.5 text-cyan-400 font-medium">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Child Safeguards & Privacy</span>
+            </div>
+            <p className="text-slate-400 text-[11px] leading-relaxed">
+              Children under 12 operate under age-appropriate curated pathways with parental consent and data minimization. Zero commercial data sharing or profiling.
             </p>
           </div>
         </div>
@@ -43,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
             <span className="text-slate-400 text-xs">DASASURYA Adaptive Intelligence</span>
           </div>
 
-          <div className="flex items-center gap-6 text-xs text-slate-400">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-slate-400">
             <button onClick={() => onNavigate('home')} className="hover:text-slate-200 transition-colors">
               Concept
             </button>
@@ -52,6 +61,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
             </button>
             <button onClick={() => onNavigate('methodology')} className="hover:text-slate-200 transition-colors">
               Learning Architecture
+            </button>
+            <button onClick={() => onNavigate('chakra')} className="hover:text-amber-300 transition-colors">
+              Chakra Alignment
+            </button>
+            <button onClick={() => onNavigate('security')} className="hover:text-cyan-300 transition-colors">
+              Privacy & Languages
             </button>
             <button onClick={() => onNavigate('faq')} className="hover:text-slate-200 transition-colors">
               FAQ

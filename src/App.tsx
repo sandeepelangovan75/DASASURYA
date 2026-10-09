@@ -21,11 +21,15 @@ import { MasteryRoadmap } from './components/roadmap/MasteryRoadmap';
 import { LearningCalendar } from './components/calendar/LearningCalendar';
 import { SanCreditsView } from './components/credits/SanCreditsView';
 import { UserProfileView } from './components/profile/UserProfileView';
+import { ChakraAlignmentModule } from './components/chakra/ChakraAlignmentModule';
+import { ParentalControlsDashboard } from './components/parental/ParentalControlsDashboard';
+import { SecurityPrivacyModule } from './components/security/SecurityPrivacyModule';
 
 // Modals
 import { DasasuryaMentorModal } from './components/dasasurya/DasasuryaMentorModal';
 import { DailyBriefingModal } from './components/briefing/DailyBriefingModal';
 import { AdminCurriculumConsole } from './components/admin/AdminCurriculumConsole';
+import { SettingsModal } from './components/settings/SettingsModal';
 
 export default function App() {
   // Authentication & Profile State
@@ -45,6 +49,7 @@ export default function App() {
   const [authMode, setAuthMode] = useState<'signin' | 'register'>('signin');
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const [dasasuryaOpen, setDasasuryaOpen] = useState(false);
+  const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [dasasuryaContext, setDasasuryaContext] = useState<{
     question?: string;
     concept?: string;
@@ -142,6 +147,7 @@ export default function App() {
             setDasasuryaContext(undefined);
             setDasasuryaOpen(true);
           }}
+          onOpenSettings={() => setSettingsModalOpen(true)}
         />
       )}
 
@@ -265,6 +271,43 @@ export default function App() {
           />
         )}
 
+        {/* CHAKRA Alignment Module (Head 03 & Vitality Centers) */}
+        {activeView === 'chakra' && currentUser && (
+          <ChakraAlignmentModule
+            user={currentUser}
+            profile={currentProfile}
+            onBackToDashboard={() => setActiveView('dashboard')}
+          />
+        )}
+
+        {/* Child Safety & Parental Authorization Controls */}
+        {activeView === 'parental' && currentUser && (
+          <ParentalControlsDashboard
+            user={currentUser}
+            profile={currentProfile}
+            onUpdateUser={(updatedUser) => {
+              setCurrentUser(updatedUser);
+              storageService.saveAccount(updatedUser);
+            }}
+            onAccountDeleted={handleSignOut}
+            onBackToDashboard={() => setActiveView('dashboard')}
+          />
+        )}
+
+        {/* Security, Privacy & Independent Language Preferences */}
+        {activeView === 'security' && currentUser && (
+          <SecurityPrivacyModule
+            user={currentUser}
+            profile={currentProfile}
+            onUpdateUser={(updatedUser) => {
+              setCurrentUser(updatedUser);
+              storageService.saveAccount(updatedUser);
+            }}
+            onAccountDeleted={handleSignOut}
+            onBackToDashboard={() => setActiveView('dashboard')}
+          />
+        )}
+
       </div>
 
       {/* Footer (Quiet, ethical notices, discreet curator link) */}
@@ -321,6 +364,20 @@ export default function App() {
       {adminConsoleOpen && (
         <AdminCurriculumConsole
           onClose={() => setAdminConsoleOpen(false)}
+        />
+      )}
+
+      {/* Global Language & Preferences Settings Modal */}
+      {currentUser && (
+        <SettingsModal
+          isOpen={settingsModalOpen}
+          onClose={() => setSettingsModalOpen(false)}
+          user={currentUser}
+          profile={currentProfile}
+          onUpdateUser={(updatedUser) => {
+            setCurrentUser(updatedUser);
+            storageService.saveAccount(updatedUser);
+          }}
         />
       )}
 

@@ -53,6 +53,7 @@ export const ProfileSetupModal: React.FC<ProfileSetupModalProps> = ({
       fullName: user.fullName,
       username: user.username,
       email: user.email,
+      phone: user.phone,
       bio,
       avatarUrl,
       interests: interestNames,
@@ -61,6 +62,14 @@ export const ProfileSetupModal: React.FC<ProfileSetupModalProps> = ({
       skillLevel,
       occupation: occupation || undefined,
       preferredSchedule: schedule,
+      dateOfBirth: user.dateOfBirth,
+      age: user.age,
+      isUnder12: user.isUnder12,
+      languagePreferences: user.languagePreferences || {
+        interfaceLanguage: 'en',
+        responseLanguage: 'en',
+        learningLanguage: 'en',
+      },
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

@@ -1,3 +1,5 @@
+import { ChakraGuidanceStyle, ChakraId, ExplanationLevel, LanguageCode, RoadmapStage } from '../types';
+
 export interface SocraticRequest {
   question: string;
   concept?: string;
@@ -5,6 +7,10 @@ export interface SocraticRequest {
   currentHead?: string;
   codeSnippet?: string;
   userProgress?: string;
+  language?: LanguageCode;
+  explanationLevel?: ExplanationLevel;
+  isUnder12?: boolean;
+  age?: number;
 }
 
 export interface SocraticResponse {
@@ -12,11 +18,13 @@ export interface SocraticResponse {
   level: number;
   response: string;
   source: string;
+  language?: string;
 }
 
 export interface RavanaMindRequest {
   problem: string;
   selectedHeads?: string[];
+  language?: LanguageCode;
 }
 
 export interface RavanaMindResponse {
@@ -28,6 +36,37 @@ export interface RavanaMindResponse {
 export interface DailyBriefResponse {
   success: boolean;
   brief: string;
+  source: string;
+}
+
+export interface RoadmapGenerationRequest {
+  goal: string;
+  targetLanguage: LanguageCode;
+  explanationLevel: ExplanationLevel;
+  currentKnowledge?: string;
+  availableMinutesPerDay?: number;
+  targetDeadlineWeeks?: number;
+  isUnder12?: boolean;
+  age?: number;
+}
+
+export interface RoadmapGenerationResponse {
+  success: boolean;
+  stages: RoadmapStage[];
+  source: string;
+}
+
+export interface ChakraGuidanceRequest {
+  chakraId: ChakraId;
+  durationMinutes: number;
+  guidanceStyle: ChakraGuidanceStyle;
+  language?: LanguageCode;
+  isUnder12?: boolean;
+}
+
+export interface ChakraGuidanceResponse {
+  success: boolean;
+  guidanceScript: string;
   source: string;
 }
 
@@ -50,8 +89,93 @@ export const aiService = {
       return {
         success: true,
         level: req.socraticLevel,
-        response: this.getHeuristicFallback(req.socraticLevel, req.question, req.concept),
+        response: this.getHeuristicFallback(req.socraticLevel, req.question, req.concept, req.language),
         source: 'dasasurya-local-pedagogy',
+        language: req.language || 'en',
+      };
+    }
+  },
+
+  async generateRoadmap(req: RoadmapGenerationRequest): Promise<RoadmapGenerationResponse> {
+    try {
+      const res = await fetch('/api/gemini/generate-roadmap', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}`);
+      }
+
+      return await res.json();
+    } catch (err: any) {
+      console.warn('Network call to roadmap generator failed, using local structured template:', err);
+      return {
+        success: true,
+        stages: [
+          {
+            stageNumber: 1,
+            title: 'Foundational Concepts & Axioms',
+            topics: ['Core Definitions', 'System Invariants', 'Axiomatic Mapping'],
+            milestone: `Articulate the basic mechanism of "${req.goal}" in your own words.`,
+            practiceTask: 'Deconstruct a real-world scenario into primary constraints.',
+            assessmentQuestion: 'What is the root assumption required for this principle to hold?',
+          },
+          {
+            stageNumber: 2,
+            title: 'Feedback Loops & Bottlenecks',
+            topics: ['Interaction Dynamics', 'Common Pitfalls', 'Equilibrium States'],
+            milestone: 'Identify where systems break down under stress.',
+            practiceTask: 'Run a mini-audit on a simulated problem.',
+            assessmentQuestion: 'How does changing the rate-limiting step shift overall output?',
+          },
+          {
+            stageNumber: 3,
+            title: 'Applied Synthesis & Practice',
+            topics: ['Hands-on Application', 'Practical Scenarios', 'Trade-off Calibration'],
+            milestone: 'Construct a viable solution model or project blueprint.',
+            practiceTask: 'Build an experimental artifact and measure results.',
+            assessmentQuestion: 'Which trade-off are you consciously accepting?',
+          },
+          {
+            stageNumber: 4,
+            title: 'Sovereign Mastery & Reflection',
+            topics: ['Edge Cases', 'Light and Shadow Integration', 'Continuous Practice'],
+            milestone: 'Teach the concept clearly or integrate it into life architecture.',
+            practiceTask: 'Write a comprehensive reflection and action protocol.',
+            assessmentQuestion: 'How does this mastery sustain your long-term autonomy?',
+          },
+        ],
+        source: 'dasasurya-local-roadmap',
+      };
+    }
+  },
+
+  async getChakraGuidance(req: ChakraGuidanceRequest): Promise<ChakraGuidanceResponse> {
+    try {
+      const res = await fetch('/api/chakra/guidance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}`);
+      }
+
+      return await res.json();
+    } catch (err: any) {
+      console.warn('Network call to chakra guidance failed, using fallback script:', err);
+      return {
+        success: true,
+        guidanceScript: `### Gentle Centering Session (${req.durationMinutes} Minutes)
+1. **Physical Grounding:** Settle into a comfortable posture. Gently release tension in your shoulders, neck, and hands.
+2. **Natural Breath Flow:** Observe the natural rhythm of your breath. Inhale calm, exhale tension.
+3. **Contemplative Anchor:** Rest your attention gently on inner balance, stability, and kindness.
+4. **Gentle Affirmation:** "I am rooted in clarity, peaceful in the present moment, and patient with my learning."
+5. **Closing:** Take a soft, gentle breath and open your eyes when you feel ready. Remember you may leave or stop anytime.`,
+        source: 'dasasurya-local-chakra',
       };
     }
   },
@@ -96,13 +220,13 @@ export const aiService = {
     }
   },
 
-  async getDailyBrief(userInterests: string[] = []): Promise<DailyBriefResponse> {
+  async getDailyBrief(userInterests: string[] = [], language: LanguageCode = 'en'): Promise<DailyBriefResponse> {
     try {
       const today = new Date().toISOString().split('T')[0];
       const res = await fetch('/api/gemini/daily-brief', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date: today, userInterests }),
+        body: JSON.stringify({ date: today, userInterests, language }),
       });
 
       if (!res.ok) {
@@ -137,7 +261,7 @@ export const aiService = {
     }
   },
 
-  getHeuristicFallback(level: number, question: string, concept?: string): string {
+  getHeuristicFallback(level: number, question: string, concept?: string, language: string = 'en'): string {
     switch (level) {
       case 1:
         return `[Level 1 Guiding Question]\n\nRegarding "${question}":\nWhat is the single most basic premise you are taking for granted? If that premise were 180 degrees inverted, how would the problem look?`;

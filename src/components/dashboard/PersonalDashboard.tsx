@@ -1,7 +1,8 @@
 import React from 'react';
 import { COURSES, HEAD_PILLARS } from '../../data/curriculum';
 import { Bookmark, Chapter, HeadId, UserAccount, UserNote, UserProfile, UserProgress } from '../../types';
-import { BookOpen, Sparkles, CheckCircle2, Bookmark as BookmarkIcon, FileText, ArrowRight, Compass, BrainCircuit, Calendar, Award } from 'lucide-react';
+import { BookOpen, Sparkles, CheckCircle2, Bookmark as BookmarkIcon, FileText, ArrowRight, Compass, BrainCircuit, Calendar, Award, Heart, ShieldCheck, ShieldAlert, Globe } from 'lucide-react';
+import { getLanguageName } from '../../data/languages';
 
 interface PersonalDashboardProps {
   user: UserAccount;
@@ -239,6 +240,110 @@ export const PersonalDashboard: React.FC<PersonalDashboardProps> = ({
             </div>
             <div className="text-[11px] text-amber-500/80 mt-1">Ethical progression XP</div>
           </div>
+        </div>
+
+        {/* Life Architecture & Vitality Centers Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* Chakra Vitality Alignment */}
+          <div className="p-5 rounded-2xl bg-[#0C101A] border border-amber-500/20 shadow-lg flex flex-col justify-between space-y-3 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-amber-500/10 transition-all" />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <Heart className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Head 03 · Chakra Vitality</span>
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950/60 text-amber-300 border border-amber-500/30">
+                  Mind-Body
+                </span>
+              </div>
+              <h3 className="text-base font-bold text-white">
+                Energy Centers & Breathwork
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                7 Traditional yogic contemplative centers for calm focus, rhythmic breath awareness, and wellness reflections.
+              </p>
+            </div>
+            <button
+              onClick={() => onNavigate('chakra')}
+              className="w-full py-2 px-3 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-amber-500/30"
+            >
+              <span>Begin Alignment Practice →</span>
+            </button>
+          </div>
+
+          {/* Child Safety & Oversight OR Security & Privacy */}
+          <div className="p-5 rounded-2xl bg-[#0C101A] border border-cyan-500/20 shadow-lg flex flex-col justify-between space-y-3 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-cyan-500/10 transition-all" />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                  {user.isUnder12 ? (
+                    <>
+                      <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Child Safety Protocol</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Data Sovereignty & Privacy</span>
+                    </>
+                  )}
+                </span>
+                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                  user.isUnder12 
+                    ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/30'
+                    : 'bg-cyan-950/60 text-cyan-300 border border-cyan-500/30'
+                }`}>
+                  {user.isUnder12 ? 'Protected Mode' : 'Sovereign'}
+                </span>
+              </div>
+              <h3 className="text-base font-bold text-white">
+                {user.isUnder12 ? 'Parental Authorization Active' : 'Zero-Tracking Privacy Safeguards'}
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                {user.isUnder12 
+                  ? 'Age-appropriate curated curriculum, PIN-protected parental oversight, and session time tracking.'
+                  : 'Independent client encryption, transparent consent management, and full one-click data export/deletion.'}
+              </p>
+            </div>
+            <button
+              onClick={() => onNavigate(user.isUnder12 ? 'parental' : 'security')}
+              className="w-full py-2 px-3 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-cyan-500/30"
+            >
+              <span>{user.isUnder12 ? 'Parental Controls Dashboard →' : 'Manage Privacy & Security →'}</span>
+            </button>
+          </div>
+
+          {/* Multilingual Intelligence Engine */}
+          <div className="p-5 rounded-2xl bg-[#0C101A] border border-violet-500/20 shadow-lg flex flex-col justify-between space-y-3 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/5 rounded-full blur-2xl pointer-events-none group-hover:bg-violet-500/10 transition-all" />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-mono text-violet-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5 text-violet-400" />
+                  <span>Multilingual Engine</span>
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-violet-950/60 text-violet-300 border border-violet-500/30 uppercase">
+                  {user.languagePreferences?.responseLanguage || 'en'}
+                </span>
+              </div>
+              <h3 className="text-base font-bold text-white">
+                Universal Linguistic Mastery
+              </h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Response: <strong className="text-slate-200">{getLanguageName(user.languagePreferences?.responseLanguage || 'en')}</strong>. Study concepts, Socratic prompts, and roadmaps in any chosen tongue.
+              </p>
+            </div>
+            <button
+              onClick={() => onNavigate('security')}
+              className="w-full py-2 px-3 rounded-lg bg-violet-500/10 hover:bg-violet-500/20 text-violet-300 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors border border-violet-500/30"
+            >
+              <span>Switch Languages & Preferences →</span>
+            </button>
+          </div>
+
         </div>
 
         {/* My Heads + Weekly Cadence */}

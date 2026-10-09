@@ -1,5 +1,24 @@
-import { Bookmark, CalendarEvent, RavanaMindAnalysis, SanCreditRecord, UserAccount, UserNote, UserProfile, UserProgress, HeadId } from '../types';
+import { 
+  Bookmark, 
+  CalendarEvent, 
+  ChakraSession, 
+  ConsentRecord, 
+  LanguageCode, 
+  LanguagePreferences, 
+  MultilingualRoadmap, 
+  ParentalConsentRecord, 
+  RavanaMindAnalysis, 
+  SanCreditRecord, 
+  UserAccount, 
+  UserNote, 
+  UserProfile, 
+  UserProgress, 
+  VerificationChannel, 
+  WellnessJournalEntry, 
+  HeadId 
+} from '../types';
 import { HEAD_PILLARS, COURSES } from '../data/curriculum';
+import { DEFAULT_LANGUAGE_PREFERENCES } from '../data/languages';
 
 const STORAGE_KEYS = {
   ACCOUNTS: 'sanr10_accounts_v1',
@@ -11,6 +30,9 @@ const STORAGE_KEYS = {
   CALENDAR: 'sanr10_calendar_v1',
   CREDITS: 'sanr10_credits_v1',
   RAVANA_MIND: 'sanr10_ravana_mind_v1',
+  ROADMAPS: 'sanr10_roadmaps_v1',
+  CHAKRA_SESSIONS: 'sanr10_chakra_sessions_v1',
+  WELLNESS_JOURNAL: 'sanr10_wellness_journal_v1',
   ADMIN_MODULES: 'sanr10_admin_modules_v1',
 };
 
@@ -34,6 +56,18 @@ function setToStorage<T>(key: string, value: T): void {
   }
 }
 
+export function calculateAge(dobString: string): number {
+  if (!dobString) return 20;
+  const dob = new Date(dobString);
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const m = now.getMonth() - dob.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) {
+    age--;
+  }
+  return Math.max(0, age);
+}
+
 // 1. ACCOUNT & AUTH SERVICE
 export const storageService = {
   // Accounts
@@ -41,56 +75,118 @@ export const storageService = {
     return getFromStorage<UserAccount[]>(STORAGE_KEYS.ACCOUNTS, []);
   },
 
-  registerAccount(user: { fullName: string; username: string; email: string; password: string }): { success: boolean; user?: UserAccount; error?: string } {
+  registerAccount(user: { 
+    fullName: string; 
+    username: string; 
+    email: string; 
+    phone?: string;
+    verificationChannel: VerificationChannel;
+    password: string;
+    dateOfBirth: string;
+    preferredLanguage?: LanguageCode;
+    parentName?: string;
+    parentContact?: string;
+  }): { success: boolean; user?: UserAccount; error?: string } {
     const accounts = this.getAccounts();
     const cleanEmail = user.email.trim().toLowerCase();
     const cleanUsername = user.username.trim().toLowerCase();
+    const cleanPhone = user.phone ? user.phone.trim() : undefined;
 
-    if (accounts.some(a => a.email.toLowerCase() === cleanEmail)) {
+    if (cleanEmail && accounts.some(a => a.email.toLowerCase() === cleanEmail)) {
       return { success: false, error: 'An account with this email address already exists.' };
     }
     if (accounts.some(a => a.username.toLowerCase() === cleanUsername)) {
       return { success: false, error: 'This username is already taken. Please choose another.' };
     }
 
-    // In local prototype, create secure simple hash
+    const age = calculateAge(user.dateOfBirth);
+    const isUnder12 = age < 12;
+    const isMinor = age < 18;
+
+    const initialLangPrefs: LanguagePreferences = {
+      interfaceLanguage: user.preferredLanguage || 'en',
+      responseLanguage: user.preferredLanguage || 'en',
+      learningLanguage: user.preferredLanguage || 'en',
+    };
+
+    const parentalConsent: ParentalConsentRecord = {
+      required: isUnder12,
+      authorized: !isUnder12, // If not under 12, no parental gate is required
+      parentName: user.parentName || undefined,
+      parentContact: user.parentContact || undefined,
+      authorizedAt: !isUnder12 ? new Date().toISOString() : undefined,
+      consentMethod: !isUnder12 ? undefined : 'email_authorization',
+      passcodePin: undefined,
+      maxDailyMinutes: isUnder12 ? 30 : 120,
+      allowedFeatures: {
+        externalLinks: !isUnder12,
+        publicSharing: false,
+        advancedChakra: !isUnder12,
+        unguidedChat: !isUnder12,
+      },
+    };
+
+    const consentRecords: ConsentRecord[] = [
+      {
+        policyVersion: '2026.1',
+        consentedAt: new Date().toISOString(),
+        types: ['terms_of_service', 'privacy_policy', 'age_safety_policy', 'data_retention'],
+      },
+    ];
+
     const newUser: UserAccount = {
       id: 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
       fullName: user.fullName.trim(),
       username: cleanUsername,
       email: cleanEmail,
-      passwordHash: btoa(user.password), // Obfuscated prototype storage
+      phone: cleanPhone,
+      verificationChannel: user.verificationChannel,
+      isVerified: true, // Activated upon verification completion
+      verifiedAt: new Date().toISOString(),
+      dateOfBirth: user.dateOfBirth,
+      age,
+      isUnder12,
+      isMinor,
+      passwordHash: btoa(user.password),
       role: 'learner',
+      parentalConsent,
+      consentRecords,
+      languagePreferences: initialLangPrefs,
       createdAt: new Date().toISOString(),
     };
 
     accounts.push(newUser);
     setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
 
-    // Initialize Default Profile
+    // Initialize Profile
     const profile: UserProfile = {
       id: 'prof_' + newUser.id,
       userId: newUser.id,
       fullName: newUser.fullName,
       username: newUser.username,
       email: newUser.email,
-      bio: 'Lifelong learner building mastery through the 10 Heads.',
+      phone: cleanPhone,
+      bio: isUnder12 
+        ? 'Young explorer building foundational wisdom and calm habits.' 
+        : 'Lifelong learner building mastery through the 10 Heads.',
       avatarUrl: `https://api.dicebear.com/7.x/shapes/svg?seed=${newUser.username}`,
       interests: ['Knowledge & Logic', 'Vitality', 'Strategy', 'Systems'],
       preferredHeads: ['head-01-knowledge-logic', 'head-03-vitality', 'head-05-strategy-governance'],
-      learningGoals: 'Master first-principles thinking and build sustainable daily learning architecture.',
+      learningGoals: isUnder12 
+        ? 'Discover how science, curiosity, and good habits work together.' 
+        : 'Master first-principles thinking and build sustainable daily learning architecture.',
       skillLevel: 'Foundational',
-      preferredSchedule: '30 mins/day',
+      preferredSchedule: isUnder12 ? '15 mins/day' : '30 mins/day',
+      dateOfBirth: user.dateOfBirth,
+      age,
+      isUnder12,
+      languagePreferences: initialLangPrefs,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
 
     this.saveProfile(profile);
-
-    // Set active session
     this.setActiveSession(newUser.id);
-
-    // Award welcome credits
     this.addCredits(newUser.id, 50, 'Welcome to SAN_R-10 Architecture');
 
     // Create Initial Calendar Starter Event
@@ -98,10 +194,10 @@ export const storageService = {
     this.createCalendarEvent({
       id: 'cal_' + Date.now(),
       userId: newUser.id,
-      title: 'Introductory Chapter: The Socratic Scalpel',
+      title: isUnder12 ? 'Welcome Lesson: The Wonder of Curiosity' : 'Introductory Chapter: The Socratic Scalpel',
       type: 'learning',
       date: today,
-      time: '18:00',
+      time: '17:00',
       chapterId: 'chap-01-first-principles',
       isCompleted: false,
       notes: 'Begin reading in Head 01',
@@ -113,7 +209,11 @@ export const storageService = {
   authenticate(loginIdentifier: string, password: string): { success: boolean; user?: UserAccount; error?: string } {
     const cleanId = loginIdentifier.trim().toLowerCase();
     const accounts = this.getAccounts();
-    const account = accounts.find(a => a.email.toLowerCase() === cleanId || a.username.toLowerCase() === cleanId);
+    const account = accounts.find(a => 
+      a.email.toLowerCase() === cleanId || 
+      a.username.toLowerCase() === cleanId || 
+      (a.phone && a.phone.replace(/[^0-9]/g, '') === cleanId.replace(/[^0-9]/g, ''))
+    );
 
     if (!account) {
       return { success: false, error: 'Invalid credentials. No matching account found.' };
@@ -155,6 +255,58 @@ export const storageService = {
       updatedAt: new Date().toISOString(),
     };
     setToStorage(STORAGE_KEYS.PROFILES, profiles);
+  },
+
+  updateLanguagePreferences(userId: string, prefs: LanguagePreferences): void {
+    const accounts = this.getAccounts();
+    const accIdx = accounts.findIndex(a => a.id === userId);
+    if (accIdx !== -1) {
+      accounts[accIdx].languagePreferences = prefs;
+      setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+    }
+
+    const prof = this.getProfile(userId);
+    if (prof) {
+      prof.languagePreferences = prefs;
+      this.saveProfile(prof);
+    }
+  },
+
+  updateParentalConsent(userId: string, consentUpdate: Partial<ParentalConsentRecord>): void {
+    const accounts = this.getAccounts();
+    const idx = accounts.findIndex(a => a.id === userId);
+    if (idx !== -1) {
+      accounts[idx].parentalConsent = {
+        ...accounts[idx].parentalConsent!,
+        ...consentUpdate,
+      };
+      setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+    }
+  },
+
+  withdrawConsent(userId: string, consentType: string): void {
+    const accounts = this.getAccounts();
+    const idx = accounts.findIndex(a => a.id === userId);
+    if (idx !== -1) {
+      accounts[idx].consentRecords.push({
+        policyVersion: '2026.1',
+        consentedAt: new Date().toISOString(),
+        withdrawnAt: new Date().toISOString(),
+        types: [consentType],
+      });
+      setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+    }
+  },
+
+  saveAccount(user: UserAccount): void {
+    const accounts = this.getAccounts();
+    const idx = accounts.findIndex(a => a.id === user.id);
+    if (idx !== -1) {
+      accounts[idx] = user;
+    } else {
+      accounts.push(user);
+    }
+    setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
   },
 
   // Learning Progress
@@ -348,7 +500,7 @@ export const storageService = {
     if (idx !== -1) {
       bookmarks.splice(idx, 1);
       setToStorage(STORAGE_KEYS.BOOKMARKS, bookmarks);
-      return false; // Removed
+      return false;
     } else {
       bookmarks.unshift({
         id: 'bm_' + Date.now(),
@@ -360,7 +512,7 @@ export const storageService = {
         createdAt: new Date().toISOString(),
       });
       setToStorage(STORAGE_KEYS.BOOKMARKS, bookmarks);
-      return true; // Added
+      return true;
     }
   },
 
@@ -431,5 +583,124 @@ export const storageService = {
       all.unshift(analysis);
     }
     setToStorage(STORAGE_KEYS.RAVANA_MIND, all);
+  },
+
+  // -----------------------------------------------------------
+  // MULTILINGUAL ROADMAPS
+  // -----------------------------------------------------------
+  getRoadmaps(userId: string): MultilingualRoadmap[] {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    return all.filter(r => r.userId === userId);
+  },
+
+  saveRoadmap(roadmap: MultilingualRoadmap): void {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    const idx = all.findIndex(r => r.id === roadmap.id);
+    if (idx !== -1) {
+      all[idx] = roadmap;
+    } else {
+      all.unshift(roadmap);
+    }
+    setToStorage(STORAGE_KEYS.ROADMAPS, all);
+  },
+
+  deleteRoadmap(roadmapId: string): void {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    setToStorage(STORAGE_KEYS.ROADMAPS, all.filter(r => r.id !== roadmapId));
+  },
+
+  // -----------------------------------------------------------
+  // CHAKRA SESSIONS & WELLNESS JOURNAL
+  // -----------------------------------------------------------
+  getChakraSessions(userId: string): ChakraSession[] {
+    const all = getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []);
+    return all.filter(s => s.userId === userId);
+  },
+
+  saveChakraSession(session: ChakraSession): void {
+    const all = getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []);
+    all.unshift(session);
+    setToStorage(STORAGE_KEYS.CHAKRA_SESSIONS, all);
+  },
+
+  getWellnessEntries(userId: string): WellnessJournalEntry[] {
+    const all = getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []);
+    return all.filter(e => e.userId === userId);
+  },
+
+  saveWellnessEntry(entry: WellnessJournalEntry): void {
+    const all = getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []);
+    all.unshift(entry);
+    setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, all);
+  },
+
+  deleteWellnessEntry(entryId: string): void {
+    const all = getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []);
+    setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, all.filter(e => e.id !== entryId));
+  },
+
+  // -----------------------------------------------------------
+  // DATA SOVEREIGNTY: EXPORT & ACCOUNT CLOSURE
+  // -----------------------------------------------------------
+  exportUserData(userId: string): Record<string, any> {
+    const user = this.getAccounts().find(a => a.id === userId);
+    const profile = this.getProfile(userId);
+    const progress = this.getProgress(userId);
+    const notes = this.getNotes(userId);
+    const bookmarks = this.getBookmarks(userId);
+    const calendar = this.getCalendarEvents(userId);
+    const credits = this.getCredits(userId);
+    const ravanaMind = this.getRavanaMindAnalyses(userId);
+    const roadmaps = this.getRoadmaps(userId);
+    const chakraSessions = this.getChakraSessions(userId);
+    const wellness = this.getWellnessEntries(userId);
+
+    // Filter out password hash and secrets
+    const safeUser = user ? { ...user, passwordHash: undefined } : null;
+
+    return {
+      metadata: {
+        system: 'SAN_R-10 DASASURYA AI',
+        exportedAt: new Date().toISOString(),
+        version: '2026.1',
+      },
+      user: safeUser,
+      profile,
+      progress,
+      notes,
+      bookmarks,
+      calendar,
+      credits,
+      ravanaMind,
+      roadmaps,
+      chakraSessions,
+      wellnessJournal: wellness,
+    };
+  },
+
+  deleteAccount(userId: string): void {
+    // Purge across all data stores
+    setToStorage(STORAGE_KEYS.ACCOUNTS, this.getAccounts().filter(a => a.id !== userId));
+
+    const profiles = getFromStorage<Record<string, UserProfile>>(STORAGE_KEYS.PROFILES, {});
+    delete profiles[userId];
+    setToStorage(STORAGE_KEYS.PROFILES, profiles);
+
+    const progress = getFromStorage<Record<string, UserProgress>>(STORAGE_KEYS.PROGRESS, {});
+    delete progress[userId];
+    setToStorage(STORAGE_KEYS.PROGRESS, progress);
+
+    setToStorage(STORAGE_KEYS.NOTES, getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []).filter(n => n.userId !== userId));
+    setToStorage(STORAGE_KEYS.BOOKMARKS, getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []).filter(b => b.userId !== userId));
+    setToStorage(STORAGE_KEYS.CALENDAR, getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []).filter(c => c.userId !== userId));
+    setToStorage(STORAGE_KEYS.CREDITS, getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []).filter(cr => cr.userId !== userId));
+    setToStorage(STORAGE_KEYS.RAVANA_MIND, getFromStorage<RavanaMindAnalysis[]>(STORAGE_KEYS.RAVANA_MIND, []).filter(r => r.userId !== userId));
+    setToStorage(STORAGE_KEYS.ROADMAPS, getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []).filter(rm => rm.userId !== userId));
+    setToStorage(STORAGE_KEYS.CHAKRA_SESSIONS, getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []).filter(cs => cs.userId !== userId));
+    setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []).filter(w => w.userId !== userId));
+
+    if (this.getActiveUser()?.id === userId) {
+      this.setActiveSession(null);
+    }
   }
 };

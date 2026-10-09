@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserAccount, UserProfile } from '../../types';
-import { Sparkles, Compass, BookOpen, Calendar, SunMedium, User, LogOut, Menu, X, BrainCircuit, ShieldAlert } from 'lucide-react';
+import { Sparkles, Compass, BookOpen, Calendar, SunMedium, User, LogOut, Menu, X, BrainCircuit, ShieldAlert, Globe, Heart } from 'lucide-react';
 
 interface NavbarProps {
   user: UserAccount | null;
@@ -12,6 +12,7 @@ interface NavbarProps {
   onSignOut: () => void;
   onOpenDailyBrief: () => void;
   onOpenDasasurya: () => void;
+  onOpenSettings?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -24,6 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSignOut,
   onOpenDailyBrief,
   onOpenDasasurya,
+  onOpenSettings,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -109,6 +111,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 Calendar
               </button>
+              <button
+                onClick={() => handleNavClick('chakra')}
+                className={`transition-colors whitespace-nowrap hover:text-white flex items-center gap-1.5 ${
+                  activeView === 'chakra' ? 'text-amber-400 border-b-2 border-amber-400 pb-1' : 'text-slate-300'
+                }`}
+              >
+                <Heart className="w-3.5 h-3.5 text-amber-400" />
+                <span>Chakra</span>
+              </button>
+              {user.isUnder12 && (
+                <button
+                  onClick={() => handleNavClick('parental')}
+                  className={`transition-colors whitespace-nowrap hover:text-white flex items-center gap-1.5 ${
+                    activeView === 'parental' ? 'text-emerald-400 border-b-2 border-emerald-400 pb-1' : 'text-slate-300'
+                  }`}
+                  title="Child Safeguards & Parental Controls"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs bg-emerald-950/60 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30">Safe</span>
+                </button>
+              )}
             </>
           ) : (
             <>
@@ -190,6 +213,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </button>
 
+              {/* Language & Settings trigger */}
+              {onOpenSettings && (
+                <button
+                  onClick={onOpenSettings}
+                  title="Languages & Preferences"
+                  className="p-1.5 text-slate-400 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors"
+                >
+                  <Globe className="w-4 h-4" />
+                </button>
+              )}
+
               {/* Sign Out */}
               <button
                 onClick={onSignOut}
@@ -270,6 +304,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Integrated Calendar
               </button>
               <button
+                onClick={() => handleNavClick('chakra')}
+                className="w-full text-left px-3 py-2 rounded-md text-sm text-amber-300 hover:bg-white/5 flex items-center gap-2"
+              >
+                <Heart className="w-4 h-4 text-amber-400" />
+                <span>CHAKRA Alignment Module</span>
+              </button>
+              {user.isUnder12 && (
+                <button
+                  onClick={() => handleNavClick('parental')}
+                  className="w-full text-left px-3 py-2 rounded-md text-sm text-emerald-300 hover:bg-white/5 flex items-center gap-2"
+                >
+                  <ShieldAlert className="w-4 h-4 text-emerald-400" />
+                  <span>Child Safety & Parental Controls</span>
+                </button>
+              )}
+              <button
                 onClick={() => handleNavClick('credits')}
                 className="w-full text-left px-3 py-2 rounded-md text-sm text-amber-300 hover:bg-white/5 flex items-center justify-between"
               >
@@ -282,6 +332,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 My Profile & Notes
               </button>
+              {onOpenSettings && (
+                <button
+                  onClick={() => { setMobileMenuOpen(false); onOpenSettings(); }}
+                  className="w-full text-left px-3 py-2 rounded-md text-sm text-slate-200 hover:bg-white/5 flex items-center gap-2"
+                >
+                  <Globe className="w-4 h-4 text-cyan-400" />
+                  <span>Languages & Privacy Settings</span>
+                </button>
+              )}
               <div className="pt-2 border-t border-white/10 flex items-center justify-between">
                 <button
                   onClick={onOpenDailyBrief}
