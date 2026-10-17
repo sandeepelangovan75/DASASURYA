@@ -1,4 +1,21 @@
+// =============================================================
+// DASASURYA — SAN R10 MASTER DATA TYPES
+// 10-Head Adaptive Intelligence & Life Architecture System
+// =============================================================
+
 export type HeadId = 
+  // Canonical Section 3 Head IDs
+  | 'head-01-knowledge'
+  | 'head-02-language'
+  | 'head-03-music'
+  | 'head-04-wellness'
+  | 'head-05-strategy'
+  | 'head-06-vision'
+  | 'head-07-voice'
+  | 'head-08-astronomy'
+  | 'head-09-traditional-knowledge'
+  | 'head-10-governance'
+  // Backward-compatible aliases
   | 'head-01-knowledge-logic'
   | 'head-02-wealth-creation'
   | 'head-03-vitality'
@@ -9,6 +26,27 @@ export type HeadId =
   | 'head-08-communication'
   | 'head-09-universal-sciences'
   | 'head-10-automation-systems';
+
+// -------------------------------------------------------------
+// SAN R10 10-COORDINATED MODES
+// -------------------------------------------------------------
+export type SanR10Mode =
+  | 'learning'      // 1. Learning mode: teaches concepts step by step and adapts
+  | 'reasoning'     // 2. Reasoning mode: examines perspectives, assumptions, trade-offs
+  | 'technical'     // 3. Technical mode: programming, debugging, architecture, research
+  | 'planning'      // 4. Planning mode: goals, schedules, priorities, milestones
+  | 'reflection'    // 5. Reflection mode: reviews progress, decisions, learning
+  | 'conversation'  // 6. Conversation mode: natural, friendly, context-aware
+  | 'voice'         // 7. Voice mode: speech input & spoken responses
+  | 'knowledge'     // 8. Knowledge mode: searches authorized documents with citations
+  | 'action'        // 9. Action mode: performs authorized operations through tools
+  | 'adaptive';     // 10. Adaptive mode: adjusts depth, tone, examples to user level
+
+// -------------------------------------------------------------
+// ROLE HIERARCHY
+// Core Admin (highest authority), Admin (manager), Learner (user)
+// -------------------------------------------------------------
+export type UserRole = 'core_admin' | 'admin' | 'learner' | 'curator_admin';
 
 // -------------------------------------------------------------
 // MULTILINGUAL TYPES
@@ -100,7 +138,7 @@ export interface ConsentRecord {
 }
 
 // -------------------------------------------------------------
-// CHAKRA ALIGNMENT MODULE TYPES
+// CHAKRA & WELLNESS MODULE TYPES
 // -------------------------------------------------------------
 export type ChakraId =
   | 'muladhara'
@@ -155,6 +193,9 @@ export interface WellnessJournalEntry {
   private: boolean;
 }
 
+// -------------------------------------------------------------
+// 10 HEAD PILLARS
+// -------------------------------------------------------------
 export interface HeadPillar {
   id: HeadId;
   number: number;
@@ -257,19 +298,24 @@ export interface Course {
   modules: Module[];
 }
 
+// -------------------------------------------------------------
+// USER PROGRESS & HABITS
+// -------------------------------------------------------------
+export interface ChapterProgressRecord {
+  readingProgress: number; // 0-100%
+  isCompleted: boolean;
+  completedAt?: string;
+  quizScore?: number;
+  quizCompleted: boolean;
+  practiceCompleted: boolean;
+  practiceSubmission?: string;
+  applicationCompleted: boolean;
+  reflectionText?: string;
+}
+
 export interface UserProgress {
   userId: string;
-  chapterProgress: Record<string, {
-    readingProgress: number; // 0-100%
-    isCompleted: boolean;
-    completedAt?: string;
-    quizScore?: number;
-    quizCompleted: boolean;
-    practiceCompleted: boolean;
-    practiceSubmission?: string;
-    applicationCompleted: boolean;
-    reflectionText?: string;
-  }>;
+  chapterProgress: Record<string, ChapterProgressRecord>;
   lastActiveChapterId?: string;
   lastActiveHeadId?: HeadId;
   streakDays: number;
@@ -312,6 +358,16 @@ export interface CalendarEvent {
   notes?: string;
 }
 
+export interface DailyHabit {
+  id: string;
+  userId: string;
+  title: string;
+  headId: HeadId;
+  targetPerWeek: number;
+  completedDays: string[]; // YYYY-MM-DD list
+  createdAt: string;
+}
+
 export interface SanCreditRecord {
   id: string;
   userId: string;
@@ -320,6 +376,9 @@ export interface SanCreditRecord {
   timestamp: string;
 }
 
+// -------------------------------------------------------------
+// USER PROFILE & ACCOUNT
+// -------------------------------------------------------------
 export interface UserProfile {
   id: string;
   userId: string;
@@ -336,6 +395,13 @@ export interface UserProfile {
   occupation?: string;
   studyCareerGoal?: string;
   preferredSchedule: '15 mins/day' | '30 mins/day' | '1 hour/day' | 'Deep Weekend Immersion';
+  timeZone?: string;
+  accessibilityPreferences?: {
+    reducedMotion: boolean;
+    highContrast: boolean;
+    largeText: boolean;
+    screenReaderOptimized: boolean;
+  };
   dateOfBirth?: string;
   age?: number;
   isUnder12?: boolean;
@@ -358,20 +424,140 @@ export interface UserAccount {
   isUnder12: boolean;
   isMinor: boolean;
   passwordHash: string;
-  role: 'learner' | 'curator_admin';
+  role: UserRole;
   parentalConsent?: ParentalConsentRecord;
   consentRecords: ConsentRecord[];
   languagePreferences: LanguagePreferences;
   createdAt: string;
 }
 
+// -------------------------------------------------------------
+// RAVANA MIND
+// -------------------------------------------------------------
 export interface RavanaMindAnalysis {
   id: string;
   userId: string;
   problem: string;
+  userGoal?: string;
+  facts?: string[];
+  assumptions?: string[];
+  unknowns?: string[];
   selectedHeads: HeadId[];
   analysisText: string;
+  approaches?: {
+    name: string;
+    advantages: string[];
+    risks: string[];
+    tradeOffs: string;
+  }[];
+  actionPlan?: string[];
   userDecision?: string;
   reflectionNotes?: string;
   createdAt: string;
+}
+
+// -------------------------------------------------------------
+// SAN R10 CONVERSATIONS, MEMORY & TOOLS
+// -------------------------------------------------------------
+export interface ExplicitUserMemory {
+  id: string;
+  userId: string;
+  topic: string;
+  content: string;
+  isApproved: boolean;
+  createdAt: string;
+}
+
+export interface AiToolAction {
+  id: string;
+  name: string;
+  description: string;
+  category: 'schedule' | 'task' | 'document' | 'export' | 'draft';
+  requiresConfirmation: boolean;
+  riskLevel: 'low' | 'consequential';
+  permission: 'learner' | 'admin' | 'core_admin';
+}
+
+export interface AiActionExecution {
+  id: string;
+  toolId: string;
+  toolName: string;
+  params: Record<string, any>;
+  status: 'pending_confirmation' | 'confirmed' | 'executed' | 'cancelled';
+  result?: string;
+  timestamp: string;
+}
+
+export interface ConversationMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  mode?: SanR10Mode;
+  timestamp: string;
+  socraticLevel?: number;
+  sources?: string[];
+  actionExecution?: AiActionExecution;
+}
+
+export interface ConversationSession {
+  id: string;
+  userId: string;
+  title: string;
+  mode: SanR10Mode;
+  messages: ConversationMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// -------------------------------------------------------------
+// DOCUMENT INTELLIGENCE & KNOWLEDGE (RAG)
+// -------------------------------------------------------------
+export interface DocumentChunk {
+  id: string;
+  documentId: string;
+  text: string;
+  pageOrSection?: string;
+}
+
+export interface DocumentKnowledge {
+  id: string;
+  userId: string;
+  title: string;
+  filename: string;
+  fileType: string;
+  fileSize: number;
+  content: string;
+  chunks: DocumentChunk[];
+  createdAt: string;
+  isAuthorized: boolean;
+}
+
+// -------------------------------------------------------------
+// ADMIN STUDIO & AUDIT TRAIL
+// -------------------------------------------------------------
+export interface ContentDraft {
+  id: string;
+  headId: HeadId;
+  title: string;
+  type: 'course' | 'chapter' | 'challenge' | 'roadmap';
+  content: any;
+  authorId: string;
+  authorName: string;
+  status: 'draft' | 'under_review' | 'approved' | 'published';
+  createdAt: string;
+  updatedAt: string;
+  reviewerNotes?: string;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  timestamp: string;
+  actorId: string;
+  actorEmail: string;
+  actorRole: UserRole;
+  action: string;
+  resourceType: string;
+  resourceId?: string;
+  details?: string;
+  ipAddress?: string;
 }

@@ -1,179 +1,218 @@
 import { Course, HeadPillar } from '../types';
 
+// =============================================================
+// THE TEN CANONICAL INTELLIGENCE HEADS OF DASASURYA
+// Grounded in Section 3 of Master Specification
+// =============================================================
+
 export const HEAD_PILLARS: HeadPillar[] = [
   {
-    id: 'head-01-knowledge-logic',
+    id: 'head-01-knowledge',
     number: 1,
     romanNumeral: 'I',
-    name: 'Knowledge & Logic',
-    tagline: 'First Principles & Rigorous Rationality',
-    focusAreas: ['Science', 'Technology', 'Mathematics', 'Logic', 'Reasoning', 'First Principles', 'Research Skills', 'Information Literacy'],
-    light: 'Knowledge, empirical discovery, rational thinking, and conceptual clarity.',
-    shadow: 'Overthinking, information overload, false certainty, and intellectual ego.',
-    selfCorrection: 'Empirical verification, uncertainty awareness, falsification testing, and epistemological humility.',
+    name: 'Knowledge',
+    tagline: 'Science, Mathematics, Computing & First Principles',
+    focusAreas: ['Science', 'Mathematics', 'Computing', 'Engineering', 'Artificial Intelligence', 'Research Methodology', 'First Principles', 'Information Literacy'],
+    light: 'Empirical discovery, conceptual rigor, rational inquiry, and clarity of thought.',
+    shadow: 'Overthinking, information overload, false certainty, and intellectual reductionism.',
+    selfCorrection: 'Empirical verification, falsification testing, uncertainty awareness, and epistemological humility.',
     accentColor: '#38BDF8', // Electric Sky
     accentBorder: 'rgba(56, 189, 248, 0.3)',
     iconName: 'Atom',
     description: 'Deconstruct complex systems to their foundational axioms. Distinguish signal from noise and build bulletproof logical deductions.'
   },
   {
-    id: 'head-02-wealth-creation',
+    id: 'head-02-language',
     number: 2,
     romanNumeral: 'II',
-    name: 'Wealth & Creation',
-    tagline: 'Asymmetric Value & Sustainable Independence',
-    focusAreas: ['Financial Literacy', 'Freelancing', 'Entrepreneurship', 'Digital Products', 'Career Skills', 'Value Creation', 'Business Fundamentals', 'Responsible Money Management'],
-    light: 'Financial independence, generative creation, ethical exchange, and expanding human opportunity.',
-    shadow: 'Greed, exploitation, obsession with accumulation, and toxic hustle culture.',
-    selfCorrection: 'Ethics, systemic sustainability, long-term compounding, and societal stewardship.',
+    name: 'Language',
+    tagline: 'Multilingual Mastery, Grammar, Translation & Comprehension',
+    focusAreas: ['Multilingual Learning', 'Grammar Systems', 'Vocabulary Acquisition', 'Translation', 'Reading Comprehension', 'Semantic Precision', 'Linguistic Roots', 'Written Composition'],
+    light: 'Effortless intercultural dialogue, expressive richness, precision of meaning, and linguistic empathy.',
+    shadow: 'Pedantic semantics, linguistic elitism, dogmatic prescriptivism, and superficial polyglotism.',
+    selfCorrection: 'Active conversation, immersion in authentic texts, charitable interpretation, and communicative utility.',
     accentColor: '#F59E0B', // Warm Amber
     accentBorder: 'rgba(245, 158, 11, 0.3)',
-    iconName: 'Coins',
-    description: 'Learn responsible capital allocation, build valuable digital and physical solutions, and master sustainable financial autonomy.'
+    iconName: 'Globe',
+    description: 'Master the architecture of human language. Internalize grammar, expand cross-lingual vocabulary, and bridge civilizations through fluent translation.'
   },
   {
-    id: 'head-03-vitality',
+    id: 'head-03-music',
     number: 3,
     romanNumeral: 'III',
-    name: 'Vitality',
-    tagline: 'Physical Resilience & Sustainable Energy',
-    focusAreas: ['Physical Fitness', 'Movement', 'Sleep Architecture', 'Nutrition Fundamentals', 'Healthy Routines', 'Stress Management', 'Sustainable Lifestyle'],
-    light: 'Sustained energy, bodily resilience, physical capability, and restorative vitality.',
-    shadow: 'Overtraining, orthorexia, body dysmorphia, chronic burnout, and rigid physical obsession.',
-    selfCorrection: 'Biological balance, intentional recovery, circadian pacing, and professional clinical guidance when needed.',
-    accentColor: '#10B981', // Emerald
-    accentBorder: 'rgba(16, 185, 129, 0.3)',
-    iconName: 'Activity',
-    description: 'Build your biological instrument. Harmonize movement, restorative sleep, and nutritional nourishment to sustain decades of high-order creative work.'
-  },
-  {
-    id: 'head-04-critical-mind',
-    number: 4,
-    romanNumeral: 'IV',
-    name: 'Critical Mind',
-    tagline: 'Cognitive Defense & Probabilistic Thought',
-    focusAreas: ['Critical Thinking', 'Cognitive Biases', 'Skepticism', 'Decision-Making', 'Argument Analysis', 'Probability', 'Problem Decomposition'],
-    light: 'Clarity of discernment, independent evaluation, and liberation from dogma.',
-    shadow: 'Paralysis by analysis, nihilistic cynicism, chronic distrust, and intellectual isolation.',
-    selfCorrection: 'Empirical evidence, intellectual openness, and proportional skepticism calibrated to risk.',
-    accentColor: '#818CF8', // Indigo
-    accentBorder: 'rgba(129, 140, 248, 0.3)',
-    iconName: 'BrainCircuit',
-    description: 'Immunize your thinking against fallacies, cognitive biases, and deceptive rhetoric. Quantify probabilities and update beliefs in light of evidence.'
-  },
-  {
-    id: 'head-05-strategy-governance',
-    number: 5,
-    romanNumeral: 'V',
-    name: 'Strategy & Governance',
-    tagline: 'Systems Thinking & Principled Leadership',
-    focusAreas: ['Strategy', 'Planning', 'Leadership', 'Systems Thinking', 'Negotiation', 'Governance', 'Decision Frameworks', 'Resource Allocation'],
-    light: 'Equitable leadership, coordinated action, clear vision, and systemic flourishing.',
-    shadow: 'Manipulation, authoritarian domination, political machinations, and zero-sum conquest.',
-    selfCorrection: 'Transparent governance, institutional accountability, mutual benefit, and servant leadership.',
-    accentColor: '#EC4899', // Rose Quartz
-    accentBorder: 'rgba(236, 72, 153, 0.3)',
-    iconName: 'Compass',
-    description: 'Anticipate second and third-order consequences. Align collective incentives and steward resources with surgical precision and integrity.'
-  },
-  {
-    id: 'head-06-creative-arts',
-    number: 6,
-    romanNumeral: 'VI',
-    name: 'Creative Arts',
-    tagline: 'Aesthetic Depth & Expressive Innovation',
-    focusAreas: ['Music', 'Writing', 'Poetry', 'Visual Creativity', 'Storytelling', 'Design Systems', 'Imagination', 'Creative Experimentation'],
-    light: 'Original aesthetic synthesis, visceral storytelling, empathy cultivation, and cultural resonance.',
-    shadow: 'Creative paralysis, performative ego, elitist isolation, and self-destructive artistic mythology.',
-    selfCorrection: 'Rapid iterative drafts, audience resonance, playful experimentation, and detached constructive critique.',
+    name: 'Music',
+    tagline: 'Music Theory, Rhythm, Sound Design & Creative Acoustics',
+    focusAreas: ['Music Theory', 'Rhythm & Meter', 'Harmonic Progression', 'Active Listening', 'Acoustic Physics', 'Composition Concepts', 'Sound Synthesis', 'Creative Exploration'],
+    light: 'Harmonic resonance, rhythmic fluency, emotional elevation through sound, and transcendent listening.',
+    shadow: 'Audio sensory overload, creative self-doubt, elitist musical gatekeeping, and acoustic distraction.',
+    selfCorrection: 'Daily ear training, playful micro-composition, structured practice, and deep silence resets.',
     accentColor: '#A855F7', // Royal Purple
     accentBorder: 'rgba(168, 85, 247, 0.3)',
-    iconName: 'Palette',
-    description: 'Channel imagination into tangible works. Combine sound, prose, imagery, and structural craft to evoke transcendent human understanding.'
+    iconName: 'Music',
+    description: 'Explore the mathematical and aesthetic universe of sound. Learn interval harmonics, rhythmic patterns, acoustic physics, and expressive composition.'
   },
   {
-    id: 'head-07-emotional-mastery',
+    id: 'head-04-wellness',
+    number: 4,
+    romanNumeral: 'IV',
+    name: 'Wellness',
+    tagline: 'Circadian Pacing, Sleep Architecture, Breathwork & Mindfulness',
+    focusAreas: ['Healthy Routines', 'Sleep Architecture', 'Stress Management', 'Mindful Breathwork', 'Habit Development', 'Physical Movement', 'Personal Wellbeing Education', 'Non-Clinical Balance'],
+    light: 'Bodily resilience, emotional equanimity, restorative sleep, and sustainable cognitive stamina.',
+    shadow: 'Orthorexia, rigid wellness anxiety, health hypochondria, and substituting wellness for medical care.',
+    selfCorrection: 'Gentle consistency, biological rhythm listening, evidence-based habits, and consulting licensed clinicians.',
+    accentColor: '#10B981', // Emerald
+    accentBorder: 'rgba(16, 185, 129, 0.3)',
+    iconName: 'Heart',
+    description: 'Nourish the biological instrument that supports high-order intelligence. Cultivate restorative sleep, rhythmic breath awareness, and calm mindfulness.'
+  },
+  {
+    id: 'head-05-strategy',
+    number: 5,
+    romanNumeral: 'V',
+    name: 'Strategy',
+    tagline: 'Critical Thinking, Game Theory, Planning & Scenario Analysis',
+    focusAreas: ['Critical Thinking', 'Logical Reasoning', 'Scenario Planning', 'Decision-Making Frameworks', 'Cognitive Bias Inoculation', 'Game Theory', 'Probabilistic Forecasting', 'Second-Order Effects'],
+    light: 'Foresight, principled leadership, unassailable logic, and sustainable resource allocation.',
+    shadow: 'Paralysis by analysis, cynical opportunism, manipulative machinations, and zero-sum conquest.',
+    selfCorrection: 'Long-term stewardship, transparent reasoning, mutual benefit, and testing assumptions against reality.',
+    accentColor: '#818CF8', // Indigo
+    accentBorder: 'rgba(129, 140, 248, 0.3)',
+    iconName: 'Compass',
+    description: 'Anticipate second and third-order consequences. Map dependencies, neutralize cognitive biases, and make high-stakes decisions with probabilistic clarity.'
+  },
+  {
+    id: 'head-06-vision',
+    number: 6,
+    romanNumeral: 'VI',
+    name: 'Vision',
+    tagline: 'Creativity, Long-Term Innovation & Future Architecture',
+    focusAreas: ['Creative Synthesis', 'Imagination', 'Future Planning', 'System Innovation', 'Life Architecture', 'Goal-Setting', 'Technological Trends', 'Generative Design'],
+    light: 'Audacious creativity, inspirational horizons, regenerative futures, and transformative life architecture.',
+    shadow: 'Utopian daydreaming, ungrounded ambition, reality distortion, and chronic non-execution.',
+    selfCorrection: 'Anchoring visions in tangible milestones, iterative prototyping, and daily disciplined execution.',
+    accentColor: '#EC4899', // Rose Quartz
+    accentBorder: 'rgba(236, 72, 153, 0.3)',
+    iconName: 'Sparkles',
+    description: 'Channel creative imagination into enduring realities. Craft 5-year and 10-year life architectures that align daily actions with visionary goals.'
+  },
+  {
+    id: 'head-07-voice',
     number: 7,
     romanNumeral: 'VII',
-    name: 'Emotional Mastery',
-    tagline: 'Self-Awareness & Equanimity',
-    focusAreas: ['Self-Awareness', 'Emotional Literacy', 'Resilience', 'Equanimity', 'Stress Inoculation', 'Personal Boundaries', 'Relational Skills'],
-    light: 'Unshakable self-awareness, emotional grounding, relational trust, and grounded compassion.',
-    shadow: 'Emotional repression, pathological detachment, emotional manipulation, and codependency.',
-    selfCorrection: 'Authentic expression, reflective inquiry, somatic awareness, and healthy relational boundaries.',
-    accentColor: '#F43F5E', // Crimson
-    accentBorder: 'rgba(244, 63, 94, 0.3)',
-    iconName: 'HeartHandshake',
-    description: 'Transform emotional reactivity into conscious intentionality. Master your internal state and build relationships founded on radical honesty and mutual respect.'
-  },
-  {
-    id: 'head-08-communication',
-    number: 8,
-    romanNumeral: 'VIII',
-    name: 'Communication',
-    tagline: 'Articulate Rhetoric & Deep Listening',
-    focusAreas: ['Linguistics', 'Technical Writing', 'Public Speaking', 'Presentation', 'Active Listening', 'Storytelling', 'Vocabulary', 'Executive Discourse'],
-    light: 'Unambiguous transmission of ideas, mutual comprehension, inspiring discourse, and bridging ideological divides.',
-    shadow: 'Sophistry, demagoguery, disinformation, weaponized rhetoric, and conversational narcissism.',
-    selfCorrection: 'Uncompromising truthfulness, active listening, radical charity of interpretation, and conciseness.',
+    name: 'Voice',
+    tagline: 'Public Speaking, Articulate Rhetoric, Presentation & Speech Skills',
+    focusAreas: ['Public Speaking', 'Conversation Practice', 'Pronunciation & Diction', 'Presentation Architecture', 'Speech Recognition', 'Executive Presence', 'Storytelling', 'Communication Confidence'],
+    light: 'Magnetic articulation, empathic listening, inspiring discourse, and bridging human misunderstandings.',
+    shadow: 'Demagoguery, weaponized rhetoric, conversational narcissism, and empty performative eloquence.',
+    selfCorrection: 'Uncompromising adherence to truth, active empathic listening, and concise economy of language.',
     accentColor: '#06B6D4', // Cyan
     accentBorder: 'rgba(6, 182, 212, 0.3)',
-    iconName: 'MessageSquareShare',
-    description: 'Deliver complex truths with effortless simplicity. Bridge differences through active listening and master the art of articulate oral and written persuasion.'
+    iconName: 'Mic',
+    description: 'Master the vocal instrument and the art of spoken persuasion. Deliver complex ideas with clarity, command respect, and inspire cooperative action.'
   },
   {
-    id: 'head-09-universal-sciences',
-    number: 9,
-    romanNumeral: 'IX',
-    name: 'Universal Sciences',
-    tagline: 'Cosmic Order & Physical Laws',
-    focusAreas: ['Astronomy', 'Fundamental Physics', 'Ecology & Earth Systems', 'Cosmology', 'Scientific Discovery', 'Universal Invariants', 'Quantum Foundations'],
-    light: 'Awe for the natural cosmos, reverence for scientific inquiry, and holistic ecological consciousness.',
-    shadow: 'Dogmatic scientism, reckless technological intervention, and cosmic nihilism.',
-    selfCorrection: 'Rigorous peer consensus, planetary stewardship, reproducibility, and awe balanced with empirical discipline.',
+    id: 'head-08-astronomy',
+    number: 8,
+    romanNumeral: 'VIII',
+    name: 'Astronomy',
+    tagline: 'Cosmology, Celestial Mechanics, Planetary Systems & Space Science',
+    focusAreas: ['Space Science', 'Celestial Mechanics', 'Planetary Systems', 'Cosmology', 'Observational Astronomy', 'Astrophysics Foundations', 'Stellar Evolution', 'Scientific Exploration'],
+    light: 'Cosmic awe, reverence for the physical universe, mathematical perspective, and ecological humility.',
+    shadow: 'Existential nihilism, detached abstraction, and escapism from planetary responsibilities.',
+    selfCorrection: 'Empirical observation, peer-reviewed astrophysics consensus, and caring for our fragile home planet.',
     accentColor: '#6366F1', // Cosmic Indigo
     accentBorder: 'rgba(99, 102, 241, 0.3)',
-    iconName: 'Globe',
-    description: 'Explore the fundamental architecture of reality. Understand celestial mechanics, thermodynamics, quantum principles, and our place in the cosmic tapestry.'
+    iconName: 'Telescope',
+    description: 'Gaze into the cosmic arena. Understand orbital dynamics, stellar lifecycles, planetary formation, and humanity place in the expanding cosmos.'
   },
   {
-    id: 'head-10-automation-systems',
+    id: 'head-09-traditional-knowledge',
+    number: 9,
+    romanNumeral: 'IX',
+    name: 'Traditional Knowledge',
+    tagline: 'History, Cultural Heritage, Philosophy & Empirical Comparison',
+    focusAreas: ['Historical Heritage', 'Philosophical Systems', 'Traditional Craft', 'Indigenous Ecological Knowledge', 'Comparative Philosophy', 'Critical Historical Analysis', 'Cultural Memory', 'Evidence Demarcation'],
+    light: 'Deep historical roots, wisdom across millennia, cultural appreciation, and nuanced philosophical grounding.',
+    shadow: 'Blind traditionalism, uncritical superstition, historical revisionism, and rejecting modern science.',
+    selfCorrection: 'Rigorous empirical comparison, distinguishing verifiable history from myth, and respectful intellectual discernment.',
+    accentColor: '#D97706', // Ancient Amber
+    accentBorder: 'rgba(217, 119, 6, 0.3)',
+    iconName: 'BookMarked',
+    description: 'Explore the ancestral reservoir of human thought. Examine ancient philosophy, traditional ecological wisdom, and critically compare with modern discoveries.'
+  },
+  {
+    id: 'head-10-governance',
     number: 10,
     romanNumeral: 'X',
-    name: 'Automation & Systems',
-    tagline: 'Algorithmic Leverage & Human Dignity',
-    focusAreas: ['Programming & Algorithms', 'Artificial Intelligence', 'Workflow Automation', 'Productivity Engineering', 'Data Architectures', 'System Reliability', 'Intentional Technology'],
-    light: 'Exponential human leverage, liberation from mundane drudgery, and elegant software architecture.',
-    shadow: 'Fragile over-automation, algorithmic alienation, privacy erosion, and loss of fundamental craft.',
-    selfCorrection: 'Human-in-the-loop governance, data sovereignty, robust fail-safes, and intentional digital minimalism.',
+    name: 'Governance',
+    tagline: 'Civic Systems, Ethical Leadership, Institutional Design & Integrity',
+    focusAreas: ['Civic Education', 'Ethical Leadership', 'Systems Governance', 'Responsible Management', 'Public Policy Concepts', 'Institutional Accountability', 'Conflict Resolution', 'Democratic Principles'],
+    light: 'Transparent administration, institutional integrity, equitable stewardship, and flourishing common good.',
+    shadow: 'Bureaucratic ossification, authoritarian corruption, regulatory capture, and self-serving political intrigue.',
+    selfCorrection: 'Radical transparency, democratic checks and balances, independent audit trails, and servant leadership.',
     accentColor: '#14B8A6', // Teal
     accentBorder: 'rgba(20, 184, 166, 0.3)',
-    iconName: 'Cpu',
-    description: 'Harness the power of computation and automated architectures. Build autonomous systems that amplify human agency rather than diminish human dignity.'
+    iconName: 'Shield',
+    description: 'Design and steward systems that endure. Learn civic responsibility, institutional governance, ethical leadership, and conflict resolution.'
   }
 ];
 
+// Helper to look up head pillar, including backward-compatible aliases
+export function getHeadById(headId: string): HeadPillar {
+  const normalized = headId.toLowerCase();
+  
+  if (normalized.includes('knowledge') || normalized.includes('01')) return HEAD_PILLARS[0];
+  if (normalized.includes('language') || normalized.includes('02')) return HEAD_PILLARS[1];
+  if (normalized.includes('music') || normalized.includes('03')) return HEAD_PILLARS[2];
+  if (normalized.includes('wellness') || normalized.includes('vitality') || normalized.includes('04')) return HEAD_PILLARS[3];
+  if (normalized.includes('strategy') || normalized.includes('critical') || normalized.includes('05')) return HEAD_PILLARS[4];
+  if (normalized.includes('vision') || normalized.includes('06')) return HEAD_PILLARS[5];
+  if (normalized.includes('voice') || normalized.includes('communication') || normalized.includes('07')) return HEAD_PILLARS[6];
+  if (normalized.includes('astronomy') || normalized.includes('universal') || normalized.includes('08')) return HEAD_PILLARS[7];
+  if (normalized.includes('traditional') || normalized.includes('09')) return HEAD_PILLARS[8];
+  if (normalized.includes('governance') || normalized.includes('automation') || normalized.includes('10')) return HEAD_PILLARS[9];
+
+  return HEAD_PILLARS[0];
+}
+
+// =============================================================
+// COMPREHENSIVE 10-HEAD DIGITAL LIBRARY COURSES
+// Adheres strictly to the 10-stage learning sequence:
+// 1. Introduction & learning objectives
+// 2. Readable lesson content
+// 3. Explanations with examples
+// 4. Key concepts & glossary
+// 5. Questions to test understanding
+// 6. Practice exercises
+// 7. Real-world application
+// 8. Reflection & feedback
+// 9. Short mastery assessment
+// 10. Recommendations for next lesson.
+// =============================================================
+
 export const COURSES: Course[] = [
+  // Course 1: Head 1 — Knowledge
   {
-    id: 'course-01-logic-foundations',
-    headId: 'head-01-knowledge-logic',
+    id: 'course-01-first-principles',
+    headId: 'head-01-knowledge',
     title: 'Foundations of Rational Inquiry & First Principles',
     subtitle: 'From Axiomatic Deconstruction to Infallible Mental Models',
     description: 'A masterclass in stripping complex ideas down to fundamental truths and building sound conclusions from the ground up.',
     level: 'Foundational',
     modules: [
       {
-        id: 'mod-01-deconstruction',
-        courseId: 'course-01-logic-foundations',
-        headId: 'head-01-knowledge-logic',
+        id: 'mod-01-first-principles',
+        courseId: 'course-01-first-principles',
+        headId: 'head-01-knowledge',
         order: 1,
         title: 'Module 1: The Anatomy of First Principles',
-        description: 'Explore how ancient geometers, modern physicists, and pioneering engineers deconstruct inherited assumptions.',
+        description: 'Explore how pioneering scientists and engineers deconstruct inherited assumptions.',
         chapters: [
           {
             id: 'chap-01-first-principles',
-            moduleId: 'mod-01-deconstruction',
-            headId: 'head-01-knowledge-logic',
+            moduleId: 'mod-01-first-principles',
+            headId: 'head-01-knowledge',
             order: 1,
             title: 'Chapter 1: The Socratic Scalpel — Deconstructing Inherited Assumptions',
             estimatedMinutes: 18,
@@ -191,7 +230,7 @@ export const COURSES: Course[] = [
               {
                 id: 'sec-01-introduction',
                 title: 'The Burden of Analogy',
-                content: `Most human reasoning proceeds through imitation. When asked why a software framework requires four layers of abstraction, or why an aerospace battery pack costs $600 per kilowatt-hour, the conventional answer is almost invariably: "Because that is the prevailing standard." 
+                content: `Most human reasoning proceeds through imitation. When asked why a software architecture requires three intermediary layers, or why an industrial manufacturing line costs $500 per unit, the conventional answer is almost invariably: "Because that is the prevailing standard." 
 
 This is reasoning by analogy: copying what others have done with minor, incremental tweaks. While socially comfortable and cognitively inexpensive, analogy is fatal when navigating structural inflection points.
 
@@ -200,99 +239,59 @@ First principles thinking, by contrast, is the practice of boiling things down t
                   term: 'First Principle (Axiom)',
                   definition: 'A foundational, self-evident proposition that cannot be deduced from any other premise within the logical system.'
                 },
-                analogy: 'Think of inherited knowledge as an ornate wooden mansion built upon shifting sand. Reasoning by analogy renovates the wallpaper. First principles thinking inspects the bedrock, removes rotten timbers, and pours a reinforced concrete foundation.'
+                analogy: 'Think of inherited knowledge as an ornate mansion built upon shifting sand. Reasoning by analogy renovates the wallpaper. First principles thinking inspects the bedrock and pours a reinforced foundation.'
               },
               {
-                id: 'sec-02-cartesian-protocol',
+                id: 'sec-02-reduction-protocol',
                 title: 'The 4-Step Analytical Reduction Protocol',
-                content: `To systematically deconstruct any complex problem or claim, follow this rigorous 4-stage protocol:
+                content: `To systematically deconstruct any complex problem, follow this 4-stage protocol:
 
-1. **Statement Clarification:** Write down the exact assertion without vague colloquialisms. (e.g., "Our platform cannot scale past 10,000 concurrent queries.")
+1. **Statement Clarification:** Write down the exact assertion without vague colloquialisms.
 2. **Assumption Strip-Mining:** Identify every implicit assumption hidden in the statement. Which depend on physical laws, and which on historical conventions?
-3. **Axiomatic Grounding:** Isolate the irreducible physical or mathematical constraints. What does Shannon's limit or CPU cache line size dictate?
+3. **Axiomatic Grounding:** Isolate the irreducible physical or mathematical constraints.
 4. **Bottom-Up Synthesis:** Reconstruct the solution using only verified axioms, unburdened by legacy architectural choices.`,
                 diagramType: 'flow',
                 diagramData: {
                   steps: ['Problem Statement', 'Strip-Mine Assumptions', 'Isolate Invariant Axioms', 'Bottom-Up Synthesis']
                 },
                 commonMistakes: [
-                  'Mistaking an established industry best-practice for an unchangeable law of physics.',
-                  'Discarding valuable historical intuition out of arrogance before verifying the edge cases.',
+                  'Mistaking an established industry convention for an unchangeable law of physics.',
+                  'Discarding valuable historical intuition out of arrogance before verifying edge cases.',
                   'Refusing to reconstruct a viable solution after dismantling an imperfect model.'
                 ]
-              },
-              {
-                id: 'sec-03-code-analogy',
-                title: 'Case Study: The 10x Battery Calculation',
-                content: `When Elon Musk investigated lithium-ion battery costs in the early 2000s, market rates were roughly $600/kWh. Instead of accepting the prevailing price tag, the engineering team applied first principles:
-
-- What are the material constituents of a battery cell? (Cobalt, nickel, aluminum, carbon, polymers, and steel).
-- If bought on the London Metal Exchange as raw spot commodities, what do those elements cost? (Roughly $80/kWh).
-- Conclusion: The $520 gap was not a fundamental physical barrier—it was an inefficiency in supply chains, chemical refining, and mechanical assembly.
-
-This single realization unlocked the electric vehicle revolution.`,
-                codeSnippet: {
-                  language: 'typescript',
-                  code: `// First Principles Material Cost Evaluator
-interface MaterialConstituent {
-  name: string;
-  marketPricePerKg: number;
-  weightPerUnitKg: number;
-}
-
-function calculateAxiomaticMaterialFloor(materials: MaterialConstituent[]): number {
-  return materials.reduce((totalFloor, material) => {
-    return totalFloor + (material.marketPricePerKg * material.weightPerUnitKg);
-  }, 0);
-}`,
-                  explanation: 'By calculating the raw physical floor cost, we separate immutable thermodynamic limits from remediable operational inefficiencies.'
-                }
               }
             ],
             summary: [
-              'Reasoning by analogy creates linear iterations; reasoning by first principles produces structural breakthroughs.',
-              'Deconstruction requires stripping away historical habits to uncover immutable physical or logical invariants.',
-              'Always balance pure intellectual skepticism with real-world empirical validation.'
+              'Reasoning by analogy creates linear iterations; first principles thinking produces structural breakthroughs.',
+              'Deconstruction requires stripping away historical habits to uncover immutable invariants.',
+              'Always balance intellectual skepticism with real-world empirical validation.'
             ],
             quiz: [
               {
                 id: 'q1-1',
                 question: 'What is the primary difference between reasoning by analogy and reasoning by first principles?',
                 options: [
-                  'Analogy uses numbers, whereas first principles uses linguistic descriptions.',
-                  'Analogy copies existing patterns with minor adjustments; first principles deconstructs to foundational physical/logical truths.',
-                  'First principles requires advanced degrees, whereas analogy is purely intuitive.',
+                  'Analogy uses numbers; first principles uses words.',
+                  'Analogy copies existing patterns with minor tweaks; first principles deconstructs to foundational truths.',
+                  'First principles requires advanced degrees, while analogy is purely intuitive.',
                   'Analogy is always incorrect, while first principles is never wrong.'
                 ],
                 correctIndex: 1,
-                explanation: 'Analogy relies on existing benchmarks and conventions. First principles interrogates foundational axioms directly.',
+                explanation: 'Analogy relies on existing benchmarks. First principles interrogates foundational axioms directly.',
                 conceptHint: 'Review Section 1: The Burden of Analogy.'
-              },
-              {
-                id: 'q1-2',
-                question: 'What is the greatest "Shadow" trap when applying Head 01 (Knowledge & Logic)?',
-                options: [
-                  'Spending too much money on books.',
-                  'Paralysis by analysis and intellectual ego that dismantles without building.',
-                  'Relying on empirical experiments.',
-                  'Communicating with too much simplicity.'
-                ],
-                correctIndex: 1,
-                explanation: 'The shadow of pure logic is hyper-intellectualization, cynicism, and inaction without constructive synthesis.',
-                conceptHint: 'Review the Pillar Alignment on Light vs Shadow.'
               }
             ],
             practice: {
               id: 'prac-01',
               title: 'Axiomatic Problem Deconstruction',
-              prompt: 'Select one bottleneck or persistent challenge in your work, study, or daily life. Write down the problem as currently framed. Then list 3 implicit assumptions you have accepted without proof. Finally, identify which one is a convention rather than an immutable law.',
+              prompt: 'Select one bottleneck or persistent challenge in your work or study. Write down the problem as currently framed. List 3 implicit assumptions you have accepted without proof. Then identify which one is merely a convention rather than an immutable law.',
               starterContent: '1. Problem Statement:\n2. Accepted Assumptions:\n  a)\n  b)\n  c)\n3. The Convention Masquerading as a Law:',
               rubric: [
                 'Problem statement is concrete and measurable.',
                 'At least three distinct implicit assumptions are surfaced.',
                 'A clear distinction is drawn between physical limits and historical conventions.'
               ],
-              suggestedSolution: 'Example Problem: "I do not have time to read books." Assumption: A book must be read linearly from page 1 to 300. Convention: You can extract the core thesis in 30 minutes by reviewing TOC, conclusions, and key chapters.'
+              suggestedSolution: 'Problem: "I do not have time to read books." Assumption: A book must be read linearly from page 1 to 300. Convention: You can extract the core thesis in 30 minutes by reviewing TOC, conclusions, and key chapters.'
             },
             realWorldApplication: {
               id: 'app-01',
@@ -311,591 +310,753 @@ function calculateAxiomaticMaterialFloor(materials: MaterialConstituent[]): numb
       }
     ]
   },
+
+  // Course 2: Head 2 — Language
   {
-    id: 'course-02-wealth-leverage',
-    headId: 'head-02-wealth-creation',
-    title: 'Value Architecture & Ethical Leverage',
-    subtitle: 'Building Compounding Assets in the Digital Age',
-    description: 'Learn foundational economics, code and media leverage, freelance positioning, and responsible personal balance sheets.',
+    id: 'course-02-universal-language',
+    headId: 'head-02-language',
+    title: 'Universal Multilingual Learning & Linguistic Architecture',
+    subtitle: 'From Phonetic Foundations to Semantic Translation Mastery',
+    description: 'Learn the architectural principles of human language, rapid vocabulary acquisition, sentence syntax, and cross-cultural communication.',
     level: 'Foundational',
     modules: [
       {
-        id: 'mod-02-asymmetric-value',
-        courseId: 'course-02-wealth-leverage',
-        headId: 'head-02-wealth-creation',
+        id: 'mod-02-language-acquisition',
+        courseId: 'course-02-universal-language',
+        headId: 'head-02-language',
         order: 1,
-        title: 'Module 1: The Forms of Leverage',
-        description: 'Understand how human labor, capital, code, and media multiply productive output without linear exhaustion.',
+        title: 'Module 1: The Polyglot Matrix',
+        description: 'How the human mind decodes and acquires foreign syntax with compounding velocity.',
         chapters: [
           {
-            id: 'chap-02-four-leverages',
-            moduleId: 'mod-02-asymmetric-value',
-            headId: 'head-02-wealth-creation',
+            id: 'chap-02-linguistic-roots',
+            moduleId: 'mod-02-language-acquisition',
+            headId: 'head-02-language',
             order: 1,
-            title: 'Chapter 1: Permissionless Leverage — Code, Media & Capital',
+            title: 'Chapter 1: The Root-Morpheme Engine — Deconstructing Vocabulary',
             estimatedMinutes: 20,
             learningObjectives: [
-              'Contrast permissioned leverage (labor, bank capital) with permissionless leverage (code, digital media).',
-              'Understand the mathematical reality of marginal reproduction cost approaching zero.',
-              'Adhere to wealth learning safety: reject get-rich-quick fallacies and recognize systemic risk.'
+              'Understand how root morphemes unlock hundreds of words across language families.',
+              'Apply spaced-retrieval cognitive anchors to foreign vocabulary.',
+              'Maintain cultural respect while translating nuanced idioms.'
             ],
             pillarAlignment: {
-              light: 'Financial independence, freedom of time, and ethical value creation for humanity.',
-              shadow: 'Greed, predatory speculation, exploitative hustle culture, and zero-sum financial gambling.',
-              selfCorrection: 'Transparent ethics, compounding durable skills, and long-term stewardship.'
+              light: 'Effortless cross-cultural bridge building and expressive precision.',
+              shadow: 'Superficial memorization without contextual understanding.',
+              selfCorrection: 'Immerse in authentic literature and active dialogue with native speakers.'
             },
             sections: [
               {
-                id: 'sec-02-1-leverage-evolution',
-                title: 'The History of Human Leverage',
-                content: `In an agrarian society, your economic output was strictly bounded by the number of calories your muscles could expend in daylight. 
+                id: 'sec-02-roots',
+                title: 'The Morpheme Multiplier',
+                content: `Language is not a collection of random syllables; it is a generative, recursive tree. When you memorize isolated words, you learn linearly ($1+1+1$). When you learn foundational morphological roots (such as Indo-European, Semitic, or Sino-Tibetan roots), you learn exponentially ($N \\times M$).
 
-The first historical forms of leverage were **Labor** (having others work for you) and **Capital** (investing money to buy factories or ships). Both of these required permission: someone had to agree to follow you, or a financier had to grant you a loan.
-
-In the 21st century, a radical discontinuity occurred: the birth of **Permissionless Leverage**. Anyone with an internet connection can write code that runs while they sleep, or publish media that educates millions without asking for a broadcast license.`,
+For instance, the Latin root *vertere* (to turn) generates *convert, divert, invert, revert, advertise, versatile, aversion, universe*. Master the root, and you automatically recognize the semantic trajectory of thirty related terms.`,
                 keyDefinition: {
-                  term: 'Marginal Cost of Replication',
-                  definition: 'The additional cost incurred to create one extra unit of an already produced asset. In digital code and written text, this cost is effectively zero.'
+                  term: 'Morpheme',
+                  definition: 'The smallest meaningful morphological unit in a language that cannot be further divided.'
                 }
-              },
-              {
-                id: 'sec-02-2-safety-warning',
-                title: 'Educational Safety & Risk Realism',
-                content: `**CRITICAL GUARDRAIL:** Wealth education within SAN_R-10 is purely educational. We never promise guaranteed income, quick windfalls, or risk-free returns. 
-
-True wealth creation is a multi-year compounding game built on specific knowledge, accountable reputation, and sound judgment. Anyone selling guaranteed formulas is selling financial illusion. Always maintain adequate cash buffers and never risk what you cannot afford to lose.`,
-                commonMistakes: [
-                  'Confusing high-volatility financial speculation with durable skill building.',
-                  'Believing leverage eliminates the need for deep domain craft.',
-                  'Sacrificing physical vitality (Head 03) or personal ethics (Head 05) in pursuit of monetary speed.'
-                ]
               }
             ],
             summary: [
-              'Permissionless leverage (code, media) democratizes creation without requiring gatekeeper approval.',
-              'Sustainable wealth is the byproduct of solving specific problems for people at scale.',
-              'Protect your integrity: reject get-rich narratives and build authentic compounding capability.'
+              'Root-based study compounds vocabulary at 10x the velocity of rote memorization.',
+              'Grammar is the generative skeleton; vocabulary is the muscle.',
+              'Contextual usage always trumps dictionary literalism.'
             ],
             quiz: [
               {
                 id: 'q2-1',
-                question: 'Which of the following is considered permissionless leverage?',
+                question: 'Why does morpheme-based study outperform isolated word flashcards?',
                 options: [
-                  'Managing a 50-person corporate committee.',
-                  'Writing an open-source software library or structured educational course.',
-                  'Borrowing money from a venture debt fund.',
-                  'Hiring manual hourly staff.'
+                  'Flashcards use too much paper.',
+                  'Morphemes form generative semantic clusters that unlock dozens of words simultaneously.',
+                  'Morphemes require no grammar rules.',
+                  'Only ancient languages have morphemes.'
                 ],
                 correctIndex: 1,
-                explanation: 'Code and media can be created and replicated globally without requiring approval from gatekeepers.',
-                conceptHint: 'Review Section 1: The History of Human Leverage.'
+                explanation: 'A single root unlocks dozens of derivative words across related linguistic families.',
+                conceptHint: 'Review Section 1: The Morpheme Multiplier.'
               }
             ],
             practice: {
               id: 'prac-02',
-              title: 'Personal Leverage Audit',
-              prompt: 'Map your current daily activities into three buckets: 1) Linear time-for-money tasks, 2) Repetitive administrative tasks that can be automated, and 3) Compounding assets (writing, code, systems) that retain value over time.',
-              starterContent: '1. Linear Hours:\n2. Candidate Automations:\n3. Compounding Assets Being Built:',
-              rubric: [
-                'Accurate classification of personal time.',
-                'Realistic identification of at least one automatable task.',
-                'A dedicated slot for building durable knowledge assets.'
-              ],
-              suggestedSolution: 'Actionable goal: Allocate 45 minutes every morning to building a reusable template or guide before checking client emails.'
+              title: 'Root Cluster Mapping',
+              prompt: 'Select one root in your target learning language (e.g. "scrib/script" in Latin or "vid/ved" in Sanskrit/Indo-European). List 5 modern derivatives and explain how each incorporates the root meaning.',
+              starterContent: '1. Root:\n2. Five Derivatives:\n  a)\n  b)\n  c)\n  d)\n  e)\n3. Shared Semantic Invariant:',
+              rubric: ['Accurate root identified', 'Five legitimate derivatives mapped', 'Shared semantic meaning explained'],
+              suggestedSolution: 'Root: Scrib/Script (to write). Derivatives: Inscribe, Transcript, Prescribe, Postscript, Description. Invariant: Marking or recording structured symbols.'
             },
             realWorldApplication: {
               id: 'app-02',
-              title: 'The Digital Micro-Product Spec',
-              scenario: 'You possess unique domain expertise in a specific workflow (e.g. data cleaning, project kickoff, resume writing).',
-              deliverablePrompt: 'Design a digital checklist, template, or interactive mini-tool that solves this problem with zero marginal cost of distribution.',
-              evaluationChecklist: [
-                'Solves an acute, specific pain point.',
-                'Requires zero incremental human hours per download.',
-                'Priced transparently with clear ethical value proposition.'
-              ]
+              title: 'Multilingual Context Brief',
+              scenario: 'You are presenting a technical proposal to a team operating in a secondary language.',
+              deliverablePrompt: 'Create a bilingual glossary of 5 critical technical terms with concise contextual definitions and non-colloquial explanations.',
+              evaluationChecklist: ['Avoids culturally ambiguous idioms.', 'Preserves technical precision.', 'Easy to verify.']
             },
-            reflectionPrompt: 'Are you currently trading your finite life-hours for short-term compensation, or are you dedicating a percentage of your focus to building assets that compound?'
+            reflectionPrompt: 'How has learning another language expanded the boundary of what you are capable of thinking?'
           }
         ]
       }
     ]
   },
+
+  // Course 3: Head 3 — Music
   {
-    id: 'course-03-vitality-endurance',
-    headId: 'head-03-vitality',
-    title: 'Biological Architecture & Ultradian Endurance',
-    subtitle: 'Circadian Pacing, Deep Sleep & Cognitive Longevity',
-    description: 'Master the biological foundation of intellectual output. Non-medical, evidence-based habit architectures.',
+    id: 'course-03-music-theory',
+    headId: 'head-03-music',
+    title: 'Acoustic Architecture & Music Theory',
+    subtitle: 'From Harmonic Ratios to Creative Composition',
+    description: 'Explore the mathematical foundation of intervals, rhythmic subdivisions, timbre, and emotive acoustic design.',
     level: 'Foundational',
     modules: [
       {
-        id: 'mod-03-circadian-rhythms',
-        courseId: 'course-03-vitality-endurance',
-        headId: 'head-03-vitality',
+        id: 'mod-03-harmonics',
+        courseId: 'course-03-music-theory',
+        headId: 'head-03-music',
         order: 1,
-        title: 'Module 1: The Physiology of Cognitive Stamina',
-        description: 'Synchronize cognitive sprints with biological ultradian rhythms and restorative sleep stages.',
+        title: 'Module 1: The Physics of Harmony',
+        description: 'How string vibration ratios and frequency harmonics create musical intervals.',
         chapters: [
           {
-            id: 'chap-03-circadian-pacing',
-            moduleId: 'mod-03-circadian-rhythms',
-            headId: 'head-03-vitality',
+            id: 'chap-03-harmonic-series',
+            moduleId: 'mod-03-harmonics',
+            headId: 'head-03-music',
             order: 1,
-            title: 'Chapter 1: The 90-Minute Ultradian Wave & Vision Resets',
-            estimatedMinutes: 15,
+            title: 'Chapter 1: The Harmonic Series — The Mathematical Bedrock of Tone',
+            estimatedMinutes: 16,
             learningObjectives: [
-              'Understand human Basic Rest-Activity Cycles (BRAC) and the 90-minute limit of intense focus.',
-              'Implement optic flow and visual divergence to disengage autonomic stress response.',
-              'Adhere to health learning safety: understand vitality education is preventative habit craft, not medical diagnosis.'
+              'Understand the integer frequency ratios underlying the octave, fifth, and fourth.',
+              'Distinguish between just intonation and equal temperament.',
+              'Hear the overtone series in everyday acoustic instruments.'
             ],
             pillarAlignment: {
-              light: 'Resilient physical energy, mental clarity, and joyful embodiment.',
-              shadow: 'Overtraining, orthorexic rigidity, neglecting social connection for wellness rituals.',
-              selfCorrection: 'Intuitive flexibility, adequate rest, and consulting licensed healthcare professionals.'
+              light: 'Harmonic listening and emotional transcendence through sound.',
+              shadow: 'Obsessing over theoretical purity while losing expressive feeling.',
+              selfCorrection: 'Play and listen with childlike wonder; prioritize acoustic resonance.'
             },
             sections: [
               {
-                id: 'sec-03-1-brac',
-                title: 'The Ultradian Rhythm of Attention',
-                content: `Just as sleep cycles oscillate in 90-minute REM/non-REM waves, waking consciousness operates along an identical **Basic Rest-Activity Cycle (BRAC)**. 
+                id: 'sec-03-series',
+                title: 'The Integer Symphony',
+                content: `When a string vibrates, it vibrates not only as a whole, but in halves ($2:1$), thirds ($3:2$), fourths ($4:3$), and fifths ($5:4$). These integer fractions create the overtone series: the natural acoustic law that governs every musical instrument from an ancient sitar to an orchestral cello.
 
-During the first 20 minutes of deep intellectual effort, the brain experiences slight friction as neurochemicals (dopamine, acetylcholine) accumulate. Peaks of high-fidelity focus occur between minute 25 and 75. After roughly 90 minutes, neural ATP depletion and receptor saturation trigger cognitive drop-off.
-
-Pushing through this boundary without rest does not double your productivity—it merely doubles your error rate and triggers sympathetic nervous system distress.`,
+Harmony is mathematics made audible to the human soul.`,
                 keyDefinition: {
-                  term: 'Ultradian Rhythm',
-                  definition: 'Recurrent biological periods or cycles repeated throughout a 24-hour day, typically lasting between 90 to 120 minutes.'
+                  term: 'Fundamental Frequency ($f_0$)',
+                  definition: 'The lowest frequency of a periodic waveform, perceived as the primary musical pitch.'
                 }
-              },
-              {
-                id: 'sec-03-2-visual-reset',
-                title: 'Panoramic Vision as an Antidote to Screen Stress',
-                content: `When you stare at a phone or monitor, your eyes maintain **foveal convergence**—a tight focal lock. The brain interprets chronic visual convergence as a vigilance state, elevating cortisol and resting heart rate.
-
-To reset your nervous system in under 120 seconds:
-1. Step away from your display.
-2. Direct your gaze toward the farthest visible horizon or outdoor sky.
-3. Soften your gaze into **panoramic vision**, consciously noticing your peripheral environment without turning your head.
-4. Take two deep nasal inhales followed by one prolonged oral sigh.`,
-                commonMistakes: [
-                  'Replacing screen work with screen leisure (e.g. checking social media during focus breaks).',
-                  'Using stimulant supplements to mask fundamental chronic sleep deficit.',
-                  'Treating personal fitness as a punishing aesthetic trial rather than functional vitality.'
-                ]
               }
             ],
             summary: [
-              'Cognitive work should be structured in 90-minute blocks separated by genuine sensory resets.',
-              'Panoramic vision and outdoor daylight are the most rapid natural tools to reset focal vigilance.',
-              'Vitality is the ultimate multiplier of logic, strategy, and creative output.'
+              'All acoustic timbres are composed of sine-wave harmonics.',
+              'Intervals are simple mathematical ratios ($2:1$ Octave, $3:2$ Fifth).',
+              'Active listening transforms passive hearing into conscious acoustic appreciation.'
             ],
             quiz: [
               {
                 id: 'q3-1',
-                question: 'What happens to human cognitive performance after approximately 90 minutes of continuous high-intensity focus?',
-                options: [
-                  'Performance improves exponentially due to hyper-focus.',
-                  'Cognitive fatigue sets in, error rates climb, and autonomic stress markers rise.',
-                  'Brain waves permanently shift into deep sleep.',
-                  'No change occurs if sufficient caffeine is consumed.'
-                ],
+                question: 'What is the frequency ratio of an exact musical octave?',
+                options: ['1:1', '2:1', '3:2', '4:3'],
                 correctIndex: 1,
-                explanation: 'Ultradian biology limits peak cognitive sprint capacity to roughly 90 minutes before restorative cycles are needed.',
-                conceptHint: 'Review Section 1: The Ultradian Rhythm of Attention.'
+                explanation: 'An octave doubles the frequency ($2:1$).',
+                conceptHint: 'Review Section 1: The Integer Symphony.'
               }
             ],
             practice: {
               id: 'prac-03',
-              title: '90-Minute Sprint & Reset Protocol',
-              prompt: 'Design a sustainable schedule for your next deep-work session. Specify your start time, the single goal of your 90-minute block, and exactly what non-screen sensory reset you will perform at minute 90.',
-              starterContent: '1. Deep Work Milestone:\n2. Focus Window (90m max):\n3. Sensory Reset Plan (No screens):',
-              rubric: [
-                'Clear single goal.',
-                'Hard 90-minute boundary.',
-                'Rest interval includes physical movement or optic horizon reset.'
-              ],
-              suggestedSolution: 'Sprint: Complete Module 1 Practice. Reset: 5-minute walk outside while keeping eyes in panoramic horizon mode.'
+              title: 'Active Listening Frequency Audit',
+              prompt: 'Listen to any piece of acoustic music for 3 minutes with eyes closed. Identify the fundamental bass instrument, the melodic lead, and note where rhythmic syncopation creates tension.',
+              starterContent: '1. Piece Selected:\n2. Bass Foundation:\n3. Melodic Register:\n4. Rhythmic Tension Moments:',
+              rubric: ['Piece chosen', 'Acoustic layers separated', 'Tension points noted'],
+              suggestedSolution: 'Cello provides $2:1$ foundational weight; violin carries melodic tension; piano syncopation resolves on beat 3.'
             },
             realWorldApplication: {
               id: 'app-03',
-              title: 'Workspace Ergonomics & Lighting Audit',
-              scenario: 'Evaluate your primary study desk or office for circadian alignment.',
-              deliverablePrompt: 'Inspect morning light exposure, monitor height, and evening ambient blue light reduction. Propose three zero-cost adjustments.',
-              evaluationChecklist: [
-                'Positions desk near natural morning sunlight.',
-                'Raises monitor to eye level to prevent cervical strain.',
-                'Introduces warm, low-intensity lighting after sunset.'
-              ]
+              title: 'Acoustic Soundscape Design',
+              scenario: 'Design a 15-minute ambient focus soundscape for deep learning sessions.',
+              deliverablePrompt: 'Specify the frequency range, rhythmic tempo (BPM), and harmonic elements that promote cognitive endurance without distraction.',
+              evaluationChecklist: ['Low frequency stability', 'Tempo between 55-65 BPM', 'Zero vocal interference']
             },
-            reflectionPrompt: 'Are you treating your body as a subservient vehicle to carry your brain around, or as the foundational biological instrument of your life architecture?'
+            reflectionPrompt: 'What role does intentional acoustic silence play in your daily cognitive clarity?'
           }
         ]
       }
     ]
   },
+
+  // Course 4: Head 4 — Wellness
   {
-    id: 'course-04-critical-mind',
-    headId: 'head-04-critical-mind',
-    title: 'Cognitive Immunity & Bayesian Reasoning',
-    subtitle: 'Debiasing Your Mental Software & Argument Analysis',
-    description: 'Master probabilistic thinking, identify deceptive logical fallacies, and calibrate personal uncertainty.',
-    level: 'Intermediate',
+    id: 'course-04-circadian-vitality',
+    headId: 'head-04-wellness',
+    title: 'Circadian Pacing & Restorative Biology',
+    subtitle: 'Building a Decades-Long Cognitive Instrument',
+    description: 'Learn evidence-based sleep architecture, gentle breathwork dynamics, stress inoculation, and mindful daily pacing.',
+    level: 'Foundational',
     modules: [
       {
-        id: 'mod-04-biases-prob',
-        courseId: 'course-04-critical-mind',
-        headId: 'head-04-critical-mind',
+        id: 'mod-04-circadian-rhythm',
+        courseId: 'course-04-circadian-vitality',
+        headId: 'head-04-wellness',
         order: 1,
-        title: 'Module 1: The De-Biasing Matrix',
-        description: 'Expose confirmation bias, base-rate neglect, and emotional rationalization.',
+        title: 'Module 1: Circadian Pacing',
+        description: 'How light, movement, and temperature anchor cognitive stamina.',
         chapters: [
           {
-            id: 'chap-04-bayesian-updates',
-            moduleId: 'mod-04-biases-prob',
-            headId: 'head-04-critical-mind',
+            id: 'chap-04-sleep-architecture',
+            moduleId: 'mod-04-circadian-rhythm',
+            headId: 'head-04-wellness',
             order: 1,
-            title: 'Chapter 1: Bayesian Updating — Changing Your Mind in Light of Evidence',
-            estimatedMinutes: 22,
+            title: 'Chapter 1: The 90-Minute Rhythm — Ultradian Cycles & Brain Recovery',
+            estimatedMinutes: 19,
             learningObjectives: [
-              'Explain Bayes theorem intuitively using prior probability, likelihood of evidence, and posterior probability.',
-              'Overcome base-rate neglect when evaluating medical, financial, or engineering metrics.',
-              'Implement a "Pre-Mortem" before finalizing high-stakes decisions.'
+              'Understand the 90-minute ultradian focus and recovery cycle.',
+              'Implement morning photon viewing to anchor cortisol and melatonin rhythms.',
+              'Epistemological safeguard: distinguish lifestyle habits from clinical medicine.'
             ],
             pillarAlignment: {
-              light: 'Intellectual independence, clarity of judgment, and freedom from dogma.',
-              shadow: 'Cynical nihilism, paralysis by endless skepticism, and refusal to commit.',
-              selfCorrection: 'Proportional skepticism calibrated to real evidence, paired with decisive action.'
+              light: 'Boundless daily energy, deep sleep recovery, and calm focus.',
+              shadow: 'Orthorexic obsession with sleep scores and fitness tracking anxiety.',
+              selfCorrection: 'Practice non-judgmental awareness; prioritize consistency over perfection.'
             },
             sections: [
               {
-                id: 'sec-04-1-bayes',
-                title: 'The Logic of Changing Your Mind',
-                content: `Most people treat beliefs as sports teams: once chosen, they defend them regardless of score. Rational thinkers treat beliefs as provisional hypotheses with associated confidence levels.
+                id: 'sec-04-circadian',
+                title: 'The Master Pacemaker: The Suprachiasmatic Nucleus',
+                content: `Your brain contains a master clock comprised of roughly 20,000 neurons in the hypothalamus: the suprachiasmatic nucleus (SCN). The SCN does not read a wrist watch; it reads photons entering your retinal ganglion cells.
 
-Bayesian reasoning can be summarized in one sentence:
-**Your new confidence should equal your prior belief, updated by how surprising the new evidence would be if your hypothesis were false.**
-
-If a claim is extraordinary, it requires evidence that is equally difficult to explain through alternative mundane mechanisms.`,
+Viewing natural outdoor light within 30 minutes of waking triggers a healthy cortisol pulse that boosts daytime alertness and starts a 14-hour timer for evening melatonin secretion.`,
                 keyDefinition: {
-                  term: 'Base-Rate Fallacy',
-                  definition: 'The cognitive error of judging the probability of an outcome based solely on specific anecdotal evidence while ignoring the overall statistical frequency of that event in the general population.'
+                  term: 'Zeitgeber',
+                  definition: 'An environmental cue, such as natural light, temperature, or physical movement, that synchronizes an organism biological rhythm.'
                 }
-              },
-              {
-                id: 'sec-04-2-premortem',
-                title: 'The Pre-Mortem Protocol',
-                content: `Invented by cognitive psychologist Gary Klein, the **Pre-Mortem** is the antidote to groupthink and optimism bias.
-
-Before launching an initiative:
-1. Gather the decision-makers.
-2. Say: "Imagine we are now 12 months in the future. The project has failed catastrophically. It was an utter disaster. In the next 10 minutes, write down the comprehensive story of how and why it failed."
-3. By legitimizing skepticism upfront, you extract critical risks that team members were previously too polite or intimidated to voice.`,
-                commonMistakes: [
-                  'Over-weighting vivid recent news stories while ignoring base rates.',
-                  'Rejecting valid counter-evidence because the person delivering it has an unappealing style.',
-                  'Believing skepticism means arguing against everything rather than searching for truth.'
-                ]
               }
             ],
             summary: [
-              'Beliefs are probability distributions, not binary dogma.',
-              'Update your views when evidence warrants it; changing your mind is a mark of strength.',
-              'Use the Pre-Mortem to surface vulnerabilities before committing irreversible capital.'
+              'Morning light is the single most powerful circadian synchronizer.',
+              'Cognitive work naturally occurs in 90-minute ultradian waves.',
+              'Mindfulness and breathwork downregulate sympathetic nervous arousal.'
             ],
             quiz: [
               {
                 id: 'q4-1',
-                question: 'What is the purpose of conducting a Pre-Mortem before initiating a major project?',
-                options: [
-                  'To assign blame in advance to team members.',
-                  'To assume failure has already occurred and surface hidden risks that optimism bias suppresses.',
-                  'To cancel all risky initiatives immediately.',
-                  'To celebrate success ahead of time.'
-                ],
+                question: 'What is the primary biological Zeitgeber for the human master circadian clock?',
+                options: ['Cold coffee', 'Natural ambient photons entering the eyes', 'Screen blue light at midnight', 'High carbohydrate meals'],
                 correctIndex: 1,
-                explanation: 'A Pre-Mortem breaks confirmation bias by asking participants to explain why the project failed, freeing them to point out flaws.',
-                conceptHint: 'Review Section 2: The Pre-Mortem Protocol.'
+                explanation: 'Retinal ganglion cells transmit light signals directly to the SCN.',
+                conceptHint: 'Review Section 1: The Master Pacemaker.'
               }
             ],
             practice: {
               id: 'prac-04',
-              title: 'Execute a Personal Pre-Mortem',
-              prompt: 'Pick your most ambitious current personal goal (e.g. learning a new language, launching a product, career pivot). Assume it is one year from today and you abandoned the goal completely. Write the 3 most likely reasons why failure occurred.',
-              starterContent: 'Assumed Failure State (1 Year Ahead):\nReason 1:\nReason 2:\nReason 3:\nPreventative Countermeasure for Reason 1:',
-              rubric: [
-                'Uncompromising honesty regarding personal friction.',
-                'Identifies behavioral causes rather than external bad luck.',
-                'Proposes a concrete preventative countermeasure.'
-              ],
-              suggestedSolution: 'Failure Reason: Procrastinating because modules felt too long. Countermeasure: Reduce daily requirement to 15 focused minutes.'
+              title: 'Circadian Light & Breath Protocol',
+              prompt: 'For 3 consecutive mornings, spend 10 minutes outdoors before viewing screens, followed by 3 minutes of gentle 4-7-8 breathing. Record your perceived afternoon focus score (1 to 10).',
+              starterContent: 'Day 1: Light time: ___, Breath: ___, Afternoon Focus: ___/10\nDay 2: Light time: ___, Breath: ___, Afternoon Focus: ___/10\nDay 3: Light time: ___, Breath: ___, Afternoon Focus: ___/10',
+              rubric: ['All 3 days recorded', 'Morning outdoor light confirmed', 'Focus score noted'],
+              suggestedSolution: 'Learner observed reduced 3 PM slump and calmer mental transition into evening study.'
             },
             realWorldApplication: {
               id: 'app-04',
-              title: 'Statistical Headline Fact-Check',
-              scenario: 'A viral news headline states: "Drinking Beverage X doubles your risk of rare condition Y from 1 in 1,000,000 to 2 in 1,000,000."',
-              deliverablePrompt: 'Calculate the absolute risk increase versus the relative risk increase. Write a 2-paragraph analysis on how media headlines exploit the base-rate fallacy.',
-              evaluationChecklist: [
-                'Distinguishes absolute risk from relative risk.',
-                'Identifies how percentage multipliers create panic.',
-                'Formulates a rational, balanced response.'
-              ]
+              title: 'Personal Cognitive Stamina Architecture',
+              scenario: 'You have an intensive 6-week project requiring high intellectual output.',
+              deliverablePrompt: 'Design a sustainable daily routine incorporating two 90-minute deep work blocks, 15-minute visual resets, and strict bedtime electronic hygiene.',
+              evaluationChecklist: ['Includes restorative visual resets.', 'Protects 8-hour sleep opportunity.', 'Zero crash stimulants.']
             },
-            reflectionPrompt: 'What is one belief you held passionately 5 years ago that you have since abandoned? What evidence compelled you to change your mind?'
+            reflectionPrompt: 'Are you treating your body as an inconvenient obstacle to work, or as the very foundation of your intelligence?'
           }
         ]
       }
     ]
   },
+
+  // Course 5: Head 5 — Strategy
   {
-    id: 'course-05-strategy-systems',
-    headId: 'head-05-strategy-governance',
-    title: 'Systems Thinking & Ethical Governance',
-    subtitle: 'Second-Order Dynamics, Game Theory & Resource Allocation',
-    description: 'Anticipate non-linear feedback loops, align incentive architectures, and lead with accountability.',
-    level: 'Intermediate',
+    id: 'course-05-strategic-thought',
+    headId: 'head-05-strategy',
+    title: 'Systems Strategy & Game Theory',
+    subtitle: 'From Cognitive Defense to Asymmetric Advantage',
+    description: 'Master probabilistic reasoning, decision trees, second-order consequences, and anti-fragile positioning.',
+    level: 'Foundational',
     modules: [
       {
-        id: 'mod-05-systems-dynamics',
-        courseId: 'course-05-strategy-systems',
-        headId: 'head-05-strategy-governance',
+        id: 'mod-05-decision-science',
+        courseId: 'course-05-strategic-thought',
+        headId: 'head-05-strategy',
         order: 1,
-        title: 'Module 1: The Architecture of Second-Order Thinking',
-        description: 'Move beyond simplistic cause-and-effect to map feedback loops and delayed consequences.',
+        title: 'Module 1: The Art of Decision Framing',
+        description: 'How to separate decisions from outcomes and evaluate risk asymmetry.',
         chapters: [
           {
-            id: 'chap-05-second-order-loops',
-            moduleId: 'mod-05-systems-dynamics',
-            headId: 'head-05-strategy-governance',
+            id: 'chap-05-second-order',
+            moduleId: 'mod-05-decision-science',
+            headId: 'head-05-strategy',
             order: 1,
-            title: 'Chapter 1: The Cobra Effect & Incentive Alignment',
-            estimatedMinutes: 20,
+            title: 'Chapter 1: Second-Order Thinking — Seeing Beyond the Immediate Horizon',
+            estimatedMinutes: 21,
             learningObjectives: [
-              'Define the Cobra Effect (perverse incentives) and identify examples in modern institutions.',
-              'Construct a causal loop diagram showing reinforcing and balancing feedback.',
-              'Apply the "Chesterton’s Fence" principle before modifying an established system.'
+              'Distinguish first-order immediate gratification from second-order systemic effects.',
+              'Map feedback loops in complex decision environments.',
+              'Apply Chesterton Fence principle before proposing reforms.'
             ],
             pillarAlignment: {
-              light: 'Equitable stewardship, transparent governance, and systemic flourishing.',
-              shadow: 'Authoritarian manipulation, political gamesmanship, and Machiavellian control.',
-              selfCorrection: 'Radical institutional transparency, open accountability, and shared ownership.'
+              light: 'Prudent foresight and durable long-term systemic flourishing.',
+              shadow: 'Paralysis by analysis and cynical manipulation of human systems.',
+              selfCorrection: 'Enforce ethical transparency and align with mutual win-win incentives.'
             },
             sections: [
               {
-                id: 'sec-05-1-cobra',
-                title: 'Perverse Incentives & The Cobra Effect',
-                content: `During British colonial rule in Delhi, the government became alarmed by the number of venomous cobras roaming the city. To eradicate them, the governor offered a cash bounty for every dead cobra delivered.
+                id: 'sec-05-chesterton',
+                title: 'The Chesterton Fence Principle',
+                content: `Suppose you come across a fence erected across a country road. A hasty first-order thinker says: "I see no use for this fence; let us tear it down."
 
-At first, the strategy seemed successful: citizens turned in large numbers of snakes. However, enterprising individuals realized they could breed cobras in their basements to claim the reward. 
+The second-order strategist responds: "If you cannot explain why it was put there, I cannot let you tear it down. Go find out why it was built, and if the reason no longer exists, we will dismantle it together."
 
-When the administration discovered this and cancelled the bounty, the breeders released their now-valueless cobras into the streets. The final cobra population was significantly higher than before the intervention began.
-
-**First-order thinking asks:** "How do we get rid of cobras? Pay people for dead ones."
-**Second-order thinking asks:** "What behavior does paying for dead cobras incentivize across a multi-month timeline?"`,
+Most systemic failures occur when well-meaning people remove constraints without understanding the secondary problems those constraints were preventing.`,
                 keyDefinition: {
-                  term: 'Perverse Incentive',
-                  definition: 'An incentive that inadvertently rewards behavior contrary to the original intention of its creators.'
+                  term: 'Chesterton Fence',
+                  definition: 'The principle that reforms should not be made until the reasoning behind the existing state of affairs is thoroughly understood.'
                 }
-              },
-              {
-                id: 'sec-05-2-chesterton',
-                title: 'Chesterton’s Fence',
-                content: `Writer G.K. Chesterton proposed a classic thought experiment: 
-
-Suppose you come across a wooden fence erected across a country road. A hasty reformer says: "I don't see the use of this fence; let us tear it down immediately."
-
-A wiser reformer replies: "If you do not see the use of it, I certainly won't let you clear it away. Go away and think. When you can come back and tell me what purpose it was built to serve, I may allow you to remove it."
-
-Before altering any code architecture, institutional rule, or daily routine, you must first understand the problem it originally solved.`,
-                commonMistakes: [
-                  'Assuming people will behave according to policy statements rather than actual economic incentives.',
-                  'Refactoring legacy code without understanding why the edge-case checks were written.',
-                  'Using coercion and punishment instead of aligning natural human motives.'
-                ]
               }
             ],
             summary: [
-              'First-order thinking solves symptoms; second-order thinking anticipates the new problems created by the solution.',
-              'People respond to incentives, not exhortations.',
-              'Respect Chesterton’s Fence before demolishing established structures.'
+              'First-order thinking asks: What happens next? Second-order asks: And then what?',
+              'Complex systems exhibit delayed, non-linear feedback loops.',
+              'Never dismantle a constraint until you understand why it exists.'
             ],
             quiz: [
               {
                 id: 'q5-1',
-                question: 'What is the core lesson of the Cobra Effect in system design?',
+                question: 'What is the core directive of Chesterton Fence?',
                 options: [
-                  'Bounties are always illegal.',
-                  'Simple linear incentives often trigger counter-productive secondary behaviors.',
-                  'Cobras cannot be caught without automation.',
-                  'First-order thinking is sufficient for complex systems.'
+                  'Fences must always be painted white.',
+                  'Never remove a system rule until you understand what problem it was built to solve.',
+                  'Always replace rules with automated scripts.',
+                  'First-order results are all that matter.'
                 ],
                 correctIndex: 1,
-                explanation: 'Linear incentives frequently generate perverse incentives when humans optimize for the proxy metric rather than the intended outcome.',
-                conceptHint: 'Review Section 1: Perverse Incentives & The Cobra Effect.'
+                explanation: 'Reforms must be preceded by understanding the original problem.',
+                conceptHint: 'Review Section 1: The Chesterton Fence Principle.'
               }
             ],
             practice: {
               id: 'prac-05',
-              title: 'Incentive Stress-Test',
-              prompt: 'Consider a proposed rule in a company or school: "Employees/students are evaluated purely on lines of code written or pages read." What perverse secondary behavior will this policy inevitably cause? How would you redesign the evaluation metric?',
-              starterContent: 'Perverse Behavior:\nUnintended Second-Order Cost:\nRedesigned Metric:',
-              rubric: [
-                'Predicts the exact gaming behavior that will emerge.',
-                'Explains the systemic degradation.',
-                'Proposes a balanced, multi-dimensional evaluation mechanism.'
-              ],
-              suggestedSolution: 'Perverse behavior: Bloating files with empty comments or verbose syntax. Redesigned metric: Quality peer reviews, bug reduction, and user impact.'
+              title: 'Second-Order Consequence Map',
+              prompt: 'Take a proposed change (e.g. eliminating all email in a company, or quitting caffeine cold-turkey). Map out: 1st order effect (immediate), 2nd order effect (1 week later), and 3rd order effect (3 months later).',
+              starterContent: 'Proposed Change:\n1st Order Effect:\n2nd Order Effect:\n3rd Order Effect:\nNet Strategic Evaluation:',
+              rubric: ['Concrete change', 'Three distinct orders of impact', 'Uncovers non-obvious secondary feedback'],
+              suggestedSolution: 'Change: Eliminating all internal meetings. 1st Order: Immediate calendar relief. 2nd Order: Communication moves to asynchronous chat. 3rd Order: Message volume causes anxiety and fragmented attention without structured sync.'
             },
             realWorldApplication: {
               id: 'app-05',
-              title: 'Resource Allocation Matrix',
-              scenario: 'You have 10 hours of discretionary capacity each week across your team or personal life.',
-              deliverablePrompt: 'Create a 2x2 resource allocation matrix dividing activities into high/low leverage and urgent/non-urgent. Reallocate at least 3 hours from low-leverage urgent to high-leverage non-urgent.',
-              evaluationChecklist: [
-                'Classifies activities based on compounding second-order value.',
-                'Cuts busywork.',
-                'Protects strategic planning time.'
-              ]
+              title: 'Strategic Scenario Blueprint',
+              scenario: 'Your project faces three competing strategic pathways with differing capital requirements.',
+              deliverablePrompt: 'Create a decision tree matrix comparing maximum downside, upside potential, and reversibility for each option.',
+              evaluationChecklist: ['Assesses reversibility (two-way vs one-way doors).', 'Evaluates black-swan downside.', 'Defines clear decision criteria.']
             },
-            reflectionPrompt: 'Where are you currently measuring a superficial proxy metric instead of the real outcome you desire?'
+            reflectionPrompt: 'Which decision in your past had unintended second-order consequences that taught you the most?'
           }
         ]
       }
     ]
   },
+
+  // Courses 6-10: Vision, Voice, Astronomy, Traditional Knowledge, Governance
   {
-    id: 'course-10-automation-mastery',
-    headId: 'head-10-automation-systems',
-    title: 'Algorithmic Workflows & Human Agency',
-    subtitle: 'Programming, Autonomous Pipelines & Intentional Tech',
-    description: 'Harness the exponential leverage of code, APIs, and AI models while protecting human discernment and dignity.',
+    id: 'course-06-visionary-architecture',
+    headId: 'head-06-vision',
+    title: 'Visionary Architecture & Long-Term Innovation',
+    subtitle: 'From Imaginative Synthesis to Concrete Future Planning',
+    description: 'Learn how to construct compelling 5-year horizons, design innovative prototypes, and align daily habits with lifelong ambition.',
     level: 'Foundational',
     modules: [
       {
-        id: 'mod-10-programmable-life',
-        courseId: 'course-10-automation-mastery',
-        headId: 'head-10-automation-systems',
+        id: 'mod-06-future-design',
+        courseId: 'course-06-visionary-architecture',
+        headId: 'head-06-vision',
         order: 1,
-        title: 'Module 1: The Automation Hierarchy',
-        description: 'Learn when to eliminate, when to simplify, and when to script.',
+        title: 'Module 1: The Architecture of Vision',
+        description: 'Translating creative imagination into verifiable execution roadmaps.',
         chapters: [
           {
-            id: 'chap-10-automation-levels',
-            moduleId: 'mod-10-programmable-life',
-            headId: 'head-10-automation-systems',
+            id: 'chap-06-visionary-foundations',
+            moduleId: 'mod-06-future-design',
+            headId: 'head-06-vision',
             order: 1,
-            title: 'Chapter 1: The Iron Law of Automation — Simplify Before You Script',
-            estimatedMinutes: 22,
+            title: 'Chapter 1: The 10-Year Horizon — Backward-Engineered Milestones',
+            estimatedMinutes: 17,
             learningObjectives: [
-              'Apply the 3-stage Automation Funnel: Eliminate -> Standardize -> Automate.',
-              'Avoid the classic developer trap of spending 40 hours automating a 5-minute task.',
-              'Implement Human-in-the-Loop safeguards to ensure algorithmic oversight.'
+              'Anchor long-term vision in concrete reverse-engineered stages.',
+              'Distinguish fantasy from disciplined creative ambition.',
+              'Overcome creative paralysis through small daily iterations.'
             ],
             pillarAlignment: {
-              light: 'Liberation from repetitive drudgery, amplified creative leverage, and reproducible precision.',
-              shadow: 'Fragile dependency, loss of core craft capability, and algorithmic alienation.',
-              selfCorrection: 'Human oversight, robust error logging, simplicity, and intentional technology boundaries.'
+              light: 'Inspirational horizons that elevate human achievement.',
+              shadow: 'Unanchored daydreaming and chronic non-execution.',
+              selfCorrection: 'Daily check-ins, tangible artifacts, and milestone accountability.'
             },
             sections: [
               {
-                id: 'sec-10-1-iron-law',
-                title: 'The Iron Law: Never Automate Waste',
-                content: `The most common mistake in systems automation is automating a process that should never have existed in the first place.
-
-Before writing a single line of script, creating a database trigger, or configuring an AI pipeline, apply this strict priority sequence:
-
-1. **Eliminate:** Can this step be completely deleted without breaking downstream dependencies? (If yes, delete it immediately).
-2. **Standardize:** If it cannot be deleted, can it be reduced to a predictable, documented format?
-3. **Automate:** Only when the process is minimal and deterministic should you build an automated pipeline.
-
-Automating an inefficient process merely produces errors at machine speed.`,
+                id: 'sec-06-reverse-engineering',
+                title: 'Backward Engineering Destiny',
+                content: `Most people plan forward: "What should I do tomorrow?" A visionary thinker plans backward: "Where will my life stand 10 years from today? To be there in 10 years, where must I stand in 5 years? In 2 years? In 6 months? And what single action must I take before noon today?"`,
                 keyDefinition: {
-                  term: 'Human-in-the-Loop (HITL)',
-                  definition: 'A system architecture where an algorithm performs heavy synthesis, aggregation, or drafting, but a human operator verifies and approves the final execution.'
+                  term: 'Backcasting',
+                  definition: 'A planning method that starts with defining a desirable future and then works backwards to identify policies and programs that connect that future to the present.'
                 }
-              },
-              {
-                id: 'sec-10-2-code-pipeline',
-                title: 'Idempotency & Fail-Safe Architecture',
-                content: `An automated script must be **idempotent**: running it once, twice, or ten times in succession must produce the exact same final state without corrupting data or creating duplicate records.
-
-Always include:
-- Graceful error catch boundaries.
-- Clear human-readable logs.
-- Safe rollback fallbacks when an external API or network request fails.`,
-                codeSnippet: {
-                  language: 'typescript',
-                  code: `// Idempotent Task Processor with Human-in-the-Loop Safeguard
-interface TaskRecord {
-  id: string;
-  payload: string;
-  status: 'draft' | 'reviewed' | 'executed';
-}
-
-function processTaskWithOversight(task: TaskRecord, humanApproved: boolean): TaskRecord {
-  if (task.status === 'executed') {
-    return task; // Idempotent: do not re-run
-  }
-  
-  if (!humanApproved) {
-    return { ...task, status: 'draft' }; // Safety guard
-  }
-
-  // Execute verified automated transformation
-  return { ...task, status: 'executed' };
-}`,
-                  explanation: 'Ensuring execution occurs only after validation and is safe against repeated invocations.'
-                },
-                commonMistakes: [
-                  'Automating an irregular task that occurs only once every six months.',
-                  'Building automated bots without human review checkpoints.',
-                  'Relying on black-box tools whose failure modes you cannot debug.'
-                ]
               }
             ],
-            summary: [
-              'Eliminate first, standardize second, automate last.',
-              'Idempotence and error logging are non-negotiable for system stability.',
-              'Keep the human in the loop for high-consequence judgment calls.'
+            summary: ['Backcasting connects ambitious futures to today execution.', 'Vision without daily iteration is mere fantasy.'],
+            quiz: [
+              {
+                id: 'q6-1',
+                question: 'What is backcasting?',
+                options: ['Looking only at past mistakes.', 'Starting with a defined future vision and planning backward to the present.', 'Predicting the weather with historical data.', 'Writing science fiction novels.'],
+                correctIndex: 1,
+                explanation: 'Backcasting starts with the target future and deduces required steps backward.',
+                conceptHint: 'Review Section 1: Backward Engineering Destiny.'
+              }
             ],
+            practice: {
+              id: 'prac-06',
+              title: '5-Year Backward Plan',
+              prompt: 'Define your primary mastery goal for 5 years from today. Backcast to Year 3, Year 1, Month 3, and Tomorrow morning.',
+              starterContent: '5-Year Goal:\n3-Year Milestone:\n1-Year Milestone:\nMonth 3 Milestone:\nTomorrow 8 AM Action:',
+              rubric: ['Measurable 5-year goal', 'Coherent backward sequence', 'Immediate next action defined'],
+              suggestedSolution: '5-Year: Lead an autonomous software research institute. 1-Year: Publish 3 verified open-source models. Tomorrow: Write chapter 1 code.'
+            },
+            realWorldApplication: {
+              id: 'app-06',
+              title: 'Quarterly Vision Matrix',
+              scenario: 'You are restructuring your life architecture for the upcoming quarter.',
+              deliverablePrompt: 'Create a 1-page roadmap balancing intellectual growth, vitality, and creative output with concrete weekly metrics.',
+              evaluationChecklist: ['Balances multiple heads.', 'Concrete metrics.', 'Includes rest buffers.']
+            },
+            reflectionPrompt: 'Does your daily calendar reflect the future you claim you want to build?'
+          }
+        ]
+      }
+    ]
+  },
+
+  // Course 7: Head 7 — Voice
+  {
+    id: 'course-07-articulate-voice',
+    headId: 'head-07-voice',
+    title: 'The Articulate Voice & Spoken Rhetoric',
+    subtitle: 'From Vocal Mechanics to Confident Public Presentation',
+    description: 'Master the vocal instrument, diaphragmatic breathing, rhetorical cadence, and high-impact presentation delivery.',
+    level: 'Foundational',
+    modules: [
+      {
+        id: 'mod-07-vocal-mechanics',
+        courseId: 'course-07-articulate-voice',
+        headId: 'head-07-voice',
+        order: 1,
+        title: 'Module 1: Speech Mechanics',
+        description: 'Physical vocal resonance, pitch control, and rhetorical pauses.',
+        chapters: [
+          {
+            id: 'chap-07-rhetorical-pause',
+            moduleId: 'mod-07-vocal-mechanics',
+            headId: 'head-07-voice',
+            order: 1,
+            title: 'Chapter 1: The Power of the Deliberate Pause',
+            estimatedMinutes: 15,
+            learningObjectives: [
+              'Replace verbal filler (um, uh, like) with deliberate silent pauses.',
+              'Anchor vocal projection in diaphragmatic resonance.',
+              'Pace speech to match listener cognitive processing speed.'
+            ],
+            pillarAlignment: {
+              light: 'Clarity of truth, inspiring presence, and mutual comprehension.',
+              shadow: 'Performative manipulation and rhetorical deception.',
+              selfCorrection: 'Uncompromising commitment to truth and economy of words.'
+            },
+            sections: [
+              {
+                id: 'sec-07-pause',
+                title: 'The Sound of Silence',
+                content: `Amateur speakers fear silence; they rush to fill every millisecond with verbal ticks ("um", "like", "you know"). Master orators view the pause as a structural element of speech. A 2-second pause before an essential point creates anticipation; a 2-second pause after allows the concept to settle into the audience memory.`,
+                keyDefinition: {
+                  term: 'Rhetorical Pause',
+                  definition: 'An intentional silence in oral delivery used to emphasize a key assertion or allow cognitive integration.'
+                }
+              }
+            ],
+            summary: ['Silence is the canvas upon which speech is painted.', 'Diaphragmatic resonance projects authority without vocal strain.'],
+            quiz: [
+              {
+                id: 'q7-1',
+                question: 'Why do master speakers utilize the deliberate pause?',
+                options: ['Because they forgot their speech.', 'To build anticipation and give listeners time to digest key insights.', 'To check their mobile phone.', 'To sound louder.'],
+                correctIndex: 1,
+                explanation: 'Pauses allow cognitive processing and create dramatic focus.',
+                conceptHint: 'Review Section 1: The Sound of Silence.'
+              }
+            ],
+            practice: {
+              id: 'prac-07',
+              title: 'Filler-Free 60-Second Challenge',
+              prompt: 'Record yourself explaining one scientific concept for 60 seconds. Count every filler word. Re-record replacing every filler with a 1-second pause.',
+              starterContent: 'Concept:\nTake 1 Filler Count:\nTake 2 Pause Count:\nKey Difference Felt:',
+              rubric: ['60-second duration', 'Recorded twice', 'Replaced fillers with silence'],
+              suggestedSolution: 'Explained gravity; Take 1 had 8 "ums"; Take 2 had 4 pauses and felt authoritative.'
+            },
+            realWorldApplication: {
+              id: 'app-07',
+              title: 'Executive Briefing Speech',
+              scenario: 'Deliver a 3-minute project update to stakeholders.',
+              deliverablePrompt: 'Structure a 3-part delivery: The Core Invariant, The Roadblock Solved, The Next Strategic Milestone.',
+              evaluationChecklist: ['Under 3 minutes.', 'Zero filler words.', 'Clear call to action.']
+            },
+            reflectionPrompt: 'Are you speaking to impress others, or speaking to transmit truth with clarity?'
+          }
+        ]
+      }
+    ]
+  },
+
+  // Course 8: Head 8 — Astronomy
+  {
+    id: 'course-08-celestial-cosmos',
+    headId: 'head-08-astronomy',
+    title: 'Cosmic Horizons & Celestial Mechanics',
+    subtitle: 'From Planetary Orbits to Deep Stellar Evolution',
+    description: 'Learn orbital physics, planetary atmospheres, stellar lifecycles, and the grand timeline of cosmic evolution.',
+    level: 'Foundational',
+    modules: [
+      {
+        id: 'mod-08-orbital-mechanics',
+        courseId: 'course-08-celestial-cosmos',
+        headId: 'head-08-astronomy',
+        order: 1,
+        title: 'Module 1: The Dance of Gravity',
+        description: 'How Newton and Kepler revealed the universal laws governing orbital mechanics.',
+        chapters: [
+          {
+            id: 'chap-08-kepler-laws',
+            moduleId: 'mod-08-orbital-mechanics',
+            headId: 'head-08-astronomy',
+            order: 1,
+            title: 'Chapter 1: Kepler Laws — The Geometry of Celestial Paths',
+            estimatedMinutes: 22,
+            learningObjectives: [
+              'State Kepler three laws of planetary motion.',
+              'Understand elliptical orbits and conservation of angular momentum.',
+              'Calculate orbital velocity shifts from perihelion to aphelion.'
+            ],
+            pillarAlignment: {
+              light: 'Cosmic awe, mathematical beauty, and planetary humility.',
+              shadow: 'Existential nihilism that diminishes the importance of earth.',
+              selfCorrection: 'Revere cosmic physics while caring deeply for our planetary home.'
+            },
+            sections: [
+              {
+                id: 'sec-08-kepler',
+                title: 'The Elliptical Breakthrough',
+                content: `For two thousand years, Western astronomy insisted that planetary orbits must be perfect circles. Johannes Kepler, armed with Tycho Brahe precision observational data of Mars, shattered this dogma: planets move in **ellipses**, with the Sun at one focus.
+
+The second law states that a line segment joining a planet and the Sun sweeps out equal areas during equal intervals of time: planets speed up when closest to the Sun (perihelion) and slow down when furthest (aphelion).`,
+                keyDefinition: {
+                  term: 'Kepler Second Law',
+                  definition: 'Equal areas are swept out in equal intervals of time, reflecting conservation of angular momentum.'
+                }
+              }
+            ],
+            summary: ['Planetary orbits are ellipses, not circles.', 'Gravitational orbital velocity varies inversely with distance from the central mass.'],
+            quiz: [
+              {
+                id: 'q8-1',
+                question: 'Where does a planet travel at its highest orbital velocity?',
+                options: ['At aphelion (furthest from the Sun)', 'At perihelion (closest to the Sun)', 'It travels at constant speed always', 'When it crosses the solar equator'],
+                correctIndex: 1,
+                explanation: 'A planet accelerates as it nears perihelion due to conservation of angular momentum.',
+                conceptHint: 'Review Section 1: The Elliptical Breakthrough.'
+              }
+            ],
+            practice: {
+              id: 'prac-08',
+              title: 'Orbital Period Comparison',
+              prompt: 'Compare Earth orbit (1 AU, 1 year) with Jupiter (5.2 AU). Using Kepler Third Law ($P^2 = a^3$), verify Jupiter orbital period.',
+              starterContent: 'Semi-major axis $a = 5.2$\n$a^3 = $\n$P = \\sqrt{a^3} = $\nCalculated Period in Earth Years:',
+              rubric: ['Correct calculation', 'Matches astronomical observation (approx 11.86 years)'],
+              suggestedSolution: '$5.2^3 = 140.6$. $\\sqrt{140.6} \\approx 11.86$ Earth years.'
+            },
+            realWorldApplication: {
+              id: 'app-08',
+              title: 'Satellite Orbit Profile',
+              scenario: 'Select an orbit profile for a planetary climate monitoring satellite.',
+              deliverablePrompt: 'Differentiate Low Earth Orbit (LEO) vs Geostationary Orbit (GEO) in terms of coverage resolution and orbital decay.',
+              evaluationChecklist: ['Explains trade-offs.', 'Considers atmospheric drag.', 'Accurate altitude numbers.']
+            },
+            reflectionPrompt: 'How does realizing the vast scale of the cosmos alter the significance of your daily worries?'
+          }
+        ]
+      }
+    ]
+  },
+
+  // Course 9: Head 9 — Traditional Knowledge
+  {
+    id: 'course-09-heritage-wisdom',
+    headId: 'head-09-traditional-knowledge',
+    title: 'Heritage Wisdom & Comparative Philosophy',
+    subtitle: 'From Ancient Epistemology to Modern Empirical Demarcation',
+    description: 'Explore the great philosophical lineages, traditional ecological knowledge, and apply critical empirical scrutiny to ancient claims.',
+    level: 'Foundational',
+    modules: [
+      {
+        id: 'mod-09-epistemic-roots',
+        courseId: 'course-09-heritage-wisdom',
+        headId: 'head-09-traditional-knowledge',
+        order: 1,
+        title: 'Module 1: Ancient Epistemologies',
+        description: 'How Indian, Greek, and Indigenous philosophical schools approached truth.',
+        chapters: [
+          {
+            id: 'chap-09-pramana-logic',
+            moduleId: 'mod-09-epistemic-roots',
+            headId: 'head-09-traditional-knowledge',
+            order: 1,
+            title: 'Chapter 1: The Pramana System — Ancient Indian Epistemology',
+            estimatedMinutes: 20,
+            learningObjectives: [
+              'Understand the Nyaya pramanas: Pratyaksha (perception) and Anumana (inference).',
+              'Distinguish empirical observation from mythological extrapolation.',
+              'Apply critical historical analysis to ancient heritage texts.'
+            ],
+            pillarAlignment: {
+              light: 'Respectful cultural understanding grounded in philosophical depth.',
+              shadow: 'Uncritical acceptance of superstition as established science.',
+              selfCorrection: 'Demand empirical replication and maintain clear demarcation between science and heritage.'
+            },
+            sections: [
+              {
+                id: 'sec-09-pramanas',
+                title: 'The Means of Valid Knowledge',
+                content: `Long before modern European epistemology, Indian philosophical systems (such as Nyaya) developed the **Pramana** system—the study of valid sources of knowledge:
+
+1. **Pratyaksha:** Direct sensory perception.
+2. **Anumana:** Logical inference based on invariable concomitance (smoke implies fire).
+3. **Upamana:** Comparison and analogy.
+4. **Shabda:** Verbal testimony of a reliable, verified authority.
+
+The Nyaya school insisted that any claim must stand up to rigorous logical debate (Vada). We study this not to accept ancient claims blindly, but to appreciate the timeless human quest for rational inquiry.`,
+                keyDefinition: {
+                  term: 'Pramana',
+                  definition: 'In Indian philosophy, a reliable source or means of valid knowledge.'
+                }
+              }
+            ],
+            summary: ['Ancient cultures developed sophisticated rational epistemologies.', 'Respecting heritage requires critical philosophical scrutiny, not blind dogmatism.'],
+            quiz: [
+              {
+                id: 'q9-1',
+                question: 'What is "Pratyaksha" in classical Indian epistemology?',
+                options: ['Blind faith in tradition.', 'Direct sensory perception.', 'Astronomical computation.', 'Poetic storytelling.'],
+                correctIndex: 1,
+                explanation: 'Pratyaksha refers to direct, valid sensory perception.',
+                conceptHint: 'Review Section 1: The Means of Valid Knowledge.'
+              }
+            ],
+            practice: {
+              id: 'prac-09',
+              title: 'Epistemological Source Audit',
+              prompt: 'Select one traditional claim or proverb (e.g. "Early to bed makes a person healthy"). Deconstruct it: What part is verified by modern circadian biology? What part was historical heuristic?',
+              starterContent: 'Claim:\nPerception/Observation Basis:\nModern Scientific Verification:\nHistorical Contextual Limit:',
+              rubric: ['Identifies claim', 'Compares with modern empirical science', 'Preserves cultural nuance without pseudoscience'],
+              suggestedSolution: 'Claim: Waking with sunrise. Verification: Retinal exposure anchors cortisol. Context: In pre-electric societies, sunlight was the only productive illumination.'
+            },
+            realWorldApplication: {
+              id: 'app-09',
+              title: 'Cultural Heritage Case Study',
+              scenario: 'A museum or educational initiative is presenting ancient philosophical artifacts to a modern science audience.',
+              deliverablePrompt: 'Draft a plaque text explaining the Nyaya system while maintaining scientific demarcation guidelines.',
+              evaluationChecklist: ['Accurate historical attribution.', 'Clear demarcation.', 'Respectful presentation.']
+            },
+            reflectionPrompt: 'How can we honor the wisdom of our ancestors without becoming prisoners of their limitations?'
+          }
+        ]
+      }
+    ]
+  },
+
+  // Course 10: Head 10 — Governance
+  {
+    id: 'course-10-ethical-governance',
+    headId: 'head-10-governance',
+    title: 'Ethical Leadership & Institutional Governance',
+    subtitle: 'From Systems Accountability to Servant Stewardship',
+    description: 'Learn institutional design, public policy principles, transparent audit trails, and ethical leadership.',
+    level: 'Foundational',
+    modules: [
+      {
+        id: 'mod-10-systems-governance',
+        courseId: 'course-10-ethical-governance',
+        headId: 'head-10-governance',
+        order: 1,
+        title: 'Module 1: Designing Resilient Institutions',
+        description: 'How incentives, audit mechanisms, and checks and balances sustain civilizations.',
+        chapters: [
+          {
+            id: 'chap-10-checks-balances',
+            moduleId: 'mod-10-systems-governance',
+            headId: 'head-10-governance',
+            order: 1,
+            title: 'Chapter 1: The Architecture of Integrity — Audit Trails & Transparency',
+            estimatedMinutes: 20,
+            learningObjectives: [
+              'Understand why systems must rely on transparent incentives rather than noble intentions.',
+              'Implement tamper-evident audit logs and role separation.',
+              'Apply servant leadership principles to group coordination.'
+            ],
+            pillarAlignment: {
+              light: 'Equitable institutions, radical transparency, and human flourishing.',
+              shadow: 'Authoritarian corruption, regulatory capture, and self-serving power consolidation.',
+              selfCorrection: 'Independent review, open audits, and power rotation.'
+            },
+            sections: [
+              {
+                id: 'sec-10-incentives',
+                title: 'The Iron Law of Institutions',
+                content: `Good intentions do not preserve institutions; structural incentives and transparent checks do. As James Madison famously articulated in Federalist No. 51: "If men were angels, no government would be necessary."
+
+In modern software and organizational systems, governance translates into:
+- **Role-Based Access Control (RBAC):** Principle of least privilege.
+- **Tamper-Evident Audit Trails:** Every administrative alteration is indelibly recorded.
+- **Separation of Duties:** No single actor can unilaterally approve and execute consequential operations without oversight.`,
+                keyDefinition: {
+                  term: 'Principle of Least Privilege',
+                  definition: 'An information security concept in which a user is given the minimum levels of access necessary to complete their specified role.'
+                }
+              }
+            ],
+            summary: ['Institutions endure when structured around incentives, not personalities.', 'Auditability is the foundation of public trust.'],
             quiz: [
               {
                 id: 'q10-1',
-                question: 'What is the very first step of the Automation Funnel before writing scripts?',
-                options: [
-                  'Choose the latest programming language.',
-                  'Eliminate the task entirely if it produces no real downstream value.',
-                  'Set up a cloud database.',
-                  'Hire an outside contractor.'
-                ],
+                question: 'What is the Principle of Least Privilege in system governance?',
+                options: ['Giving every user full admin rights.', 'Restricting user access to only the minimum permissions required for their role.', 'Eliminating all security passwords.', 'Ignoring audit logs.'],
                 correctIndex: 1,
-                explanation: 'Elimination always precedes automation. Automating waste produces fast waste.',
-                conceptHint: 'Review Section 1: The Iron Law.'
+                explanation: 'Least privilege prevents accidental or malicious overreach by minimizing access.',
+                conceptHint: 'Review Section 1: The Iron Law of Institutions.'
               }
             ],
             practice: {
               id: 'prac-10',
-              title: 'Workflow Simplification Audit',
-              prompt: 'Identify one workflow you repeat weekly (e.g. file naming, data entry, email filtering). Run it through the 3-step funnel: Can any part be eliminated? Can the format be standardized? What minimal rule or tool would automate the rest?',
-              starterContent: '1. Repetitive Workflow:\n2. Steps to Eliminate:\n3. Standardized Format:\n4. Proposed Automation:',
-              rubric: [
-                'Clear weekly task identified.',
-                'Demonstrates ruthless elimination of unnecessary steps.',
-                'Proposes a maintainable, lightweight automation.'
-              ],
-              suggestedSolution: 'Workflow: Downloading invoice PDFs and renaming them. Standardization: Filter rule in email to auto-label and save to a synchronized local directory.'
+              title: 'Access Control Audit Exercise',
+              prompt: 'Review a project or organization you participate in. Identify one area where someone has excessive permissions beyond what their role demands. Propose a segmented role structure.',
+              starterContent: '1. Organization/Project:\n2. Over-privileged Role:\n3. Identified Risk:\n4. Proposed Segmented Permissions:',
+              rubric: ['Identifies real privilege bottleneck', 'Assesses failure risk', 'Proposes balanced RBAC matrix'],
+              suggestedSolution: 'All team members currently have production database delete rights. Proposed: Separate developer read/test rights from automated CI/CD deployment keys.'
             },
             realWorldApplication: {
               id: 'app-10',
-              title: 'Autonomous Daily Digest Pipeline',
-              scenario: 'Design a personal system that pulls your three most critical learning bookmarks and sends a 1-line prompt every morning.',
-              deliverablePrompt: 'Specify the data source, the trigger mechanism, the failure fallback, and how you prevent notification fatigue.',
-              evaluationChecklist: [
-                'Requires zero ongoing manual intervention.',
-                'Includes a fallback if network fails.',
-                'Respects personal attention boundaries.'
-              ]
+              title: 'Governance Policy Formulation',
+              scenario: 'Draft a data governance and audit policy for an educational platform.',
+              deliverablePrompt: 'Specify how user deletion requests are logged, how administrative actions are tracked, and how formula injection in data exports is prevented.',
+              evaluationChecklist: ['Details immutable audit logging.', 'Prevents spreadsheet formula injection.', 'Protects learner privacy.']
             },
-            reflectionPrompt: 'Has your technology made you more autonomous and sovereign, or has it tethered you to an endless stream of digital notifications?'
+            reflectionPrompt: 'When given authority, do you use it to empower the collective, or to insulate yourself from accountability?'
           }
         ]
       }

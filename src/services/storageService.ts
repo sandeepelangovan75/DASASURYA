@@ -1,8 +1,14 @@
 import { 
+  AuditLogEntry,
   Bookmark, 
   CalendarEvent, 
   ChakraSession, 
   ConsentRecord, 
+  ContentDraft,
+  ConversationSession,
+  DailyHabit,
+  ExplicitUserMemory,
+  HeadId,
   LanguageCode, 
   LanguagePreferences, 
   MultilingualRoadmap, 
@@ -13,27 +19,31 @@ import {
   UserNote, 
   UserProfile, 
   UserProgress, 
+  UserRole,
   VerificationChannel, 
-  WellnessJournalEntry, 
-  HeadId 
+  WellnessJournalEntry 
 } from '../types';
-import { HEAD_PILLARS, COURSES } from '../data/curriculum';
+import { HEAD_PILLARS, COURSES, getHeadById } from '../data/curriculum';
 import { DEFAULT_LANGUAGE_PREFERENCES } from '../data/languages';
 
 const STORAGE_KEYS = {
-  ACCOUNTS: 'sanr10_accounts_v1',
-  SESSION: 'sanr10_active_session_v1',
-  PROFILES: 'sanr10_profiles_v1',
-  PROGRESS: 'sanr10_progress_v1',
-  NOTES: 'sanr10_notes_v1',
-  BOOKMARKS: 'sanr10_bookmarks_v1',
-  CALENDAR: 'sanr10_calendar_v1',
-  CREDITS: 'sanr10_credits_v1',
-  RAVANA_MIND: 'sanr10_ravana_mind_v1',
-  ROADMAPS: 'sanr10_roadmaps_v1',
-  CHAKRA_SESSIONS: 'sanr10_chakra_sessions_v1',
-  WELLNESS_JOURNAL: 'sanr10_wellness_journal_v1',
-  ADMIN_MODULES: 'sanr10_admin_modules_v1',
+  ACCOUNTS: 'dasasurya_accounts_v2',
+  SESSION: 'dasasurya_active_session_v2',
+  PROFILES: 'dasasurya_profiles_v2',
+  PROGRESS: 'dasasurya_progress_v2',
+  NOTES: 'dasasurya_notes_v2',
+  BOOKMARKS: 'dasasurya_bookmarks_v2',
+  CALENDAR: 'dasasurya_calendar_v2',
+  HABITS: 'dasasurya_habits_v2',
+  CREDITS: 'dasasurya_credits_v2',
+  RAVANA_MIND: 'dasasurya_ravana_mind_v2',
+  ROADMAPS: 'dasasurya_roadmaps_v2',
+  CHAKRA_SESSIONS: 'dasasurya_chakra_sessions_v2',
+  WELLNESS_JOURNAL: 'dasasurya_wellness_journal_v2',
+  CONVERSATIONS: 'dasasurya_conversations_v2',
+  EXPLICIT_MEMORY: 'dasasurya_memory_v2',
+  ADMIN_DRAFTS: 'dasasurya_admin_drafts_v2',
+  AUDIT_LOGS: 'dasasurya_audit_logs_v2',
 };
 
 // Safe JSON helpers
@@ -68,7 +78,23 @@ export function calculateAge(dobString: string): number {
   return Math.max(0, age);
 }
 
-// 1. ACCOUNT & AUTH SERVICE
+// -------------------------------------------------------------
+// SECURE CSV FORMULA INJECTION SANITIZER
+// Ensures exported CSVs never trigger formula execution in spreadsheet software
+// -------------------------------------------------------------
+export function sanitizeCsvValue(val: any): string {
+  if (val === null || val === undefined) return '""';
+  let s = String(val);
+  // If value begins with =, +, -, @, \t, or \r, prefix with a single quote
+  if (/^[=\+\-@\t\r]/.test(s)) {
+    s = "'" + s;
+  }
+  return `"${s.replace(/"/g, '""')}"`;
+}
+
+// -------------------------------------------------------------
+// STORAGE & IDENTITY SERVICE
+// -------------------------------------------------------------
 export const storageService = {
   // Accounts
   getAccounts(): UserAccount[] {
@@ -86,6 +112,7 @@ export const storageService = {
     preferredLanguage?: LanguageCode;
     parentName?: string;
     parentContact?: string;
+    role?: UserRole;
   }): { success: boolean; user?: UserAccount; error?: string } {
     const accounts = this.getAccounts();
     const cleanEmail = user.email.trim().toLowerCase();
@@ -111,7 +138,7 @@ export const storageService = {
 
     const parentalConsent: ParentalConsentRecord = {
       required: isUnder12,
-      authorized: !isUnder12, // If not under 12, no parental gate is required
+      authorized: !isUnder12,
       parentName: user.parentName || undefined,
       parentContact: user.parentContact || undefined,
       authorizedAt: !isUnder12 ? new Date().toISOString() : undefined,
@@ -128,11 +155,17 @@ export const storageService = {
 
     const consentRecords: ConsentRecord[] = [
       {
-        policyVersion: '2026.1',
+        policyVersion: '2026.2',
         consentedAt: new Date().toISOString(),
         types: ['terms_of_service', 'privacy_policy', 'age_safety_policy', 'data_retention'],
       },
     ];
+
+    // Bootstrap first account or designated developer email as Core Admin
+    let assignedRole: UserRole = user.role || 'learner';
+    if (accounts.length === 0 || cleanEmail.includes('sandeep') || cleanEmail.includes('admin@dasasurya')) {
+      assignedRole = 'core_admin';
+    }
 
     const newUser: UserAccount = {
       id: 'usr_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
@@ -141,14 +174,14 @@ export const storageService = {
       email: cleanEmail,
       phone: cleanPhone,
       verificationChannel: user.verificationChannel,
-      isVerified: true, // Activated upon verification completion
+      isVerified: true,
       verifiedAt: new Date().toISOString(),
       dateOfBirth: user.dateOfBirth,
       age,
       isUnder12,
       isMinor,
       passwordHash: btoa(user.password),
-      role: 'learner',
+      role: assignedRole,
       parentalConsent,
       consentRecords,
       languagePreferences: initialLangPrefs,
@@ -158,7 +191,7 @@ export const storageService = {
     accounts.push(newUser);
     setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
 
-    // Initialize Profile
+    // Initialize User Profile
     const profile: UserProfile = {
       id: 'prof_' + newUser.id,
       userId: newUser.id,
@@ -167,14 +200,16 @@ export const storageService = {
       email: newUser.email,
       phone: cleanPhone,
       bio: isUnder12 
-        ? 'Young explorer building foundational wisdom and calm habits.' 
+        ? 'Young explorer cultivating foundational wisdom and calm learning habits.' 
+        : assignedRole === 'core_admin' 
+        ? 'Core System Architect & Guardian of the DASASURYA Platform.'
         : 'Lifelong learner building mastery through the 10 Heads.',
       avatarUrl: `https://api.dicebear.com/7.x/shapes/svg?seed=${newUser.username}`,
-      interests: ['Knowledge & Logic', 'Vitality', 'Strategy', 'Systems'],
-      preferredHeads: ['head-01-knowledge-logic', 'head-03-vitality', 'head-05-strategy-governance'],
+      interests: ['Knowledge', 'Wellness', 'Strategy', 'Governance'],
+      preferredHeads: ['head-01-knowledge', 'head-04-wellness', 'head-05-strategy'],
       learningGoals: isUnder12 
-        ? 'Discover how science, curiosity, and good habits work together.' 
-        : 'Master first-principles thinking and build sustainable daily learning architecture.',
+        ? 'Discover how science, language, and healthy routines work together.' 
+        : 'Master first principles thinking and build sustainable daily learning architecture.',
       skillLevel: 'Foundational',
       preferredSchedule: isUnder12 ? '15 mins/day' : '30 mins/day',
       dateOfBirth: user.dateOfBirth,
@@ -187,7 +222,7 @@ export const storageService = {
 
     this.saveProfile(profile);
     this.setActiveSession(newUser.id);
-    this.addCredits(newUser.id, 50, 'Welcome to SAN_R-10 Architecture');
+    this.addCredits(newUser.id, 50, 'Welcome to DASASURYA & SAN R10 Architecture');
 
     // Create Initial Calendar Starter Event
     const today = new Date().toISOString().split('T')[0];
@@ -200,8 +235,10 @@ export const storageService = {
       time: '17:00',
       chapterId: 'chap-01-first-principles',
       isCompleted: false,
-      notes: 'Begin reading in Head 01',
+      notes: 'Begin reading in Head 01 (Knowledge)',
     });
+
+    this.recordAuditLog(newUser.id, newUser.email, newUser.role, 'USER_REGISTERED', 'ACCOUNT', `Role: ${newUser.role}`);
 
     return { success: true, user: newUser };
   },
@@ -224,6 +261,7 @@ export const storageService = {
     }
 
     this.setActiveSession(account.id);
+    this.recordAuditLog(account.id, account.email, account.role, 'USER_LOGIN', 'SESSION');
     return { success: true, user: account };
   },
 
@@ -239,10 +277,40 @@ export const storageService = {
   },
 
   signOut(): void {
+    const active = this.getActiveUser();
+    if (active) {
+      this.recordAuditLog(active.id, active.email, active.role, 'USER_LOGOUT', 'SESSION');
+    }
     this.setActiveSession(null);
   },
 
-  // Profile
+  // Role Management (Core Admin > Admin > Learner)
+  isCoreAdmin(userId: string): boolean {
+    const user = this.getAccounts().find(a => a.id === userId);
+    return user?.role === 'core_admin';
+  },
+
+  isAdmin(userId: string): boolean {
+    const user = this.getAccounts().find(a => a.id === userId);
+    return user?.role === 'admin' || user?.role === 'core_admin' || user?.role === 'curator_admin';
+  },
+
+  setAccountRole(callerId: string, targetUserId: string, newRole: UserRole): boolean {
+    if (!this.isCoreAdmin(callerId)) {
+      console.warn('Unauthorized attempt to modify role. Only Core Admin may assign roles.');
+      return false;
+    }
+    const accounts = this.getAccounts();
+    const targetIdx = accounts.findIndex(a => a.id === targetUserId);
+    if (targetIdx === -1) return false;
+
+    accounts[targetIdx].role = newRole;
+    setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+    this.recordAuditLog(callerId, 'caller', 'core_admin', 'ROLE_UPDATED', 'ACCOUNT', `Set ${accounts[targetIdx].email} to ${newRole}`, targetUserId);
+    return true;
+  },
+
+  // Profile Management
   getProfile(userId: string): UserProfile | null {
     const profiles = getFromStorage<Record<string, UserProfile>>(STORAGE_KEYS.PROFILES, {});
     return profiles[userId] || null;
@@ -281,6 +349,7 @@ export const storageService = {
         ...consentUpdate,
       };
       setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+      this.recordAuditLog(userId, accounts[idx].email, accounts[idx].role, 'PARENTAL_CONSENT_UPDATED', 'CHILD_SAFETY');
     }
   },
 
@@ -289,12 +358,13 @@ export const storageService = {
     const idx = accounts.findIndex(a => a.id === userId);
     if (idx !== -1) {
       accounts[idx].consentRecords.push({
-        policyVersion: '2026.1',
+        policyVersion: '2026.2',
         consentedAt: new Date().toISOString(),
         withdrawnAt: new Date().toISOString(),
         types: [consentType],
       });
       setToStorage(STORAGE_KEYS.ACCOUNTS, accounts);
+      this.recordAuditLog(userId, accounts[idx].email, accounts[idx].role, 'CONSENT_WITHDRAWN', 'PRIVACY', consentType);
     }
   },
 
@@ -317,7 +387,7 @@ export const storageService = {
         userId,
         chapterProgress: {},
         lastActiveChapterId: 'chap-01-first-principles',
-        lastActiveHeadId: 'head-01-knowledge-logic',
+        lastActiveHeadId: 'head-01-knowledge',
         streakDays: 1,
         lastActiveDate: new Date().toISOString().split('T')[0],
         totalReadingMinutes: 0,
@@ -354,155 +424,130 @@ export const storageService = {
     userProgress.lastActiveHeadId = headId;
     userProgress.totalReadingMinutes = (userProgress.totalReadingMinutes || 0) + readingMinutes;
 
+    // Daily streak check
+    const today = new Date().toISOString().split('T')[0];
+    if (userProgress.lastActiveDate !== today) {
+      userProgress.streakDays = (userProgress.streakDays || 0) + 1;
+      userProgress.lastActiveDate = today;
+      this.addCredits(userId, 10, 'Daily Learning Streak Maintained');
+    }
+
     allProgress[userId] = userProgress;
     setToStorage(STORAGE_KEYS.PROGRESS, allProgress);
   },
 
-  recordQuizSubmission(userId: string, chapterId: string, score: number, totalQuestions: number): void {
+  recordQuizResult(userId: string, chapterId: string, scorePercent: number): void {
     const allProgress = getFromStorage<Record<string, UserProgress>>(STORAGE_KEYS.PROGRESS, {});
     const userProgress = this.getProgress(userId);
     const prev = userProgress.chapterProgress[chapterId] || {
-      readingProgress: 0,
+      readingProgress: 100,
       isCompleted: false,
       quizCompleted: false,
       practiceCompleted: false,
       applicationCompleted: false,
     };
 
-    const percent = Math.round((score / totalQuestions) * 100);
-    const quizCompleted = percent >= 50;
-
     userProgress.chapterProgress[chapterId] = {
       ...prev,
-      quizScore: percent,
-      quizCompleted,
-      isCompleted: (prev.readingProgress >= 90 && quizCompleted && prev.practiceCompleted),
+      quizCompleted: true,
+      quizScore: scorePercent,
     };
 
     allProgress[userId] = userProgress;
     setToStorage(STORAGE_KEYS.PROGRESS, allProgress);
+    this.addCredits(userId, 20, `Passed Socratic Check for ${chapterId}`);
+  },
 
-    if (quizCompleted && !prev.quizCompleted) {
-      this.addCredits(userId, 25, `Understanding Check Passed: ${chapterId}`);
-    }
+  recordQuizSubmission(userId: string, chapterId: string, score: number, totalQuestions: number): void {
+    const scorePercent = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+    this.recordQuizResult(userId, chapterId, scorePercent);
   },
 
   recordPracticeSubmission(userId: string, chapterId: string, submissionText: string): void {
     const allProgress = getFromStorage<Record<string, UserProgress>>(STORAGE_KEYS.PROGRESS, {});
     const userProgress = this.getProgress(userId);
     const prev = userProgress.chapterProgress[chapterId] || {
-      readingProgress: 0,
+      readingProgress: 100,
       isCompleted: false,
       quizCompleted: false,
       practiceCompleted: false,
       applicationCompleted: false,
     };
 
-    const isFirstTime = !prev.practiceCompleted;
-
     userProgress.chapterProgress[chapterId] = {
       ...prev,
       practiceCompleted: true,
       practiceSubmission: submissionText,
-      isCompleted: (prev.readingProgress >= 90 && prev.quizCompleted),
     };
 
     allProgress[userId] = userProgress;
     setToStorage(STORAGE_KEYS.PROGRESS, allProgress);
-
-    if (isFirstTime) {
-      this.addCredits(userId, 35, `Practice Exercise Completed: ${chapterId}`);
-    }
+    this.addCredits(userId, 30, `Completed Practice for ${chapterId}`);
   },
 
   recordReflection(userId: string, chapterId: string, reflectionText: string): void {
     const allProgress = getFromStorage<Record<string, UserProgress>>(STORAGE_KEYS.PROGRESS, {});
     const userProgress = this.getProgress(userId);
     const prev = userProgress.chapterProgress[chapterId] || {
-      readingProgress: 0,
+      readingProgress: 100,
       isCompleted: false,
       quizCompleted: false,
       practiceCompleted: false,
       applicationCompleted: false,
     };
 
-    const isFirst = !prev.reflectionText;
-
     userProgress.chapterProgress[chapterId] = {
       ...prev,
+      applicationCompleted: true,
       reflectionText,
+      isCompleted: true,
     };
 
     allProgress[userId] = userProgress;
     setToStorage(STORAGE_KEYS.PROGRESS, allProgress);
-
-    if (isFirst) {
-      this.addCredits(userId, 20, `Chapter Reflection Journaled: ${chapterId}`);
-    }
+    this.addCredits(userId, 40, `Completed Chapter Mastery & Reflection`);
   },
 
   // Notes
   getNotes(userId: string): UserNote[] {
-    const notes = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
-    return notes.filter(n => n.userId === userId);
+    const all = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
+    return all.filter(n => n.userId === userId);
   },
 
-  saveNote(note: Omit<UserNote, 'id' | 'createdAt' | 'updatedAt'> & { id?: string }): UserNote {
-    const notes = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
-    const now = new Date().toISOString();
-
-    if (note.id) {
-      const idx = notes.findIndex(n => n.id === note.id);
-      if (idx !== -1) {
-        notes[idx] = {
-          ...notes[idx],
-          title: note.title,
-          content: note.content,
-          updatedAt: now,
-        };
-        setToStorage(STORAGE_KEYS.NOTES, notes);
-        return notes[idx];
-      }
-    }
-
+  saveNote(note: Omit<UserNote, 'id' | 'createdAt' | 'updatedAt'>): UserNote {
+    const all = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
     const newNote: UserNote = {
+      ...note,
       id: 'note_' + Date.now(),
-      userId: note.userId,
-      chapterId: note.chapterId,
-      chapterTitle: note.chapterTitle,
-      headId: note.headId,
-      title: note.title,
-      content: note.content,
-      createdAt: now,
-      updatedAt: now,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
-
-    notes.unshift(newNote);
-    setToStorage(STORAGE_KEYS.NOTES, notes);
+    all.unshift(newNote);
+    setToStorage(STORAGE_KEYS.NOTES, all);
     return newNote;
   },
 
   deleteNote(noteId: string): void {
-    const notes = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
-    setToStorage(STORAGE_KEYS.NOTES, notes.filter(n => n.id !== noteId));
+    const all = getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []);
+    setToStorage(STORAGE_KEYS.NOTES, all.filter(n => n.id !== noteId));
   },
 
   // Bookmarks
   getBookmarks(userId: string): Bookmark[] {
-    const bookmarks = getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []);
-    return bookmarks.filter(b => b.userId === userId);
+    const all = getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []);
+    return all.filter(b => b.userId === userId);
   },
 
   toggleBookmark(userId: string, chapterId: string, chapterTitle: string, headId: HeadId, headName: string): boolean {
-    const bookmarks = getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []);
-    const idx = bookmarks.findIndex(b => b.userId === userId && b.chapterId === chapterId);
+    const all = getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []);
+    const existingIdx = all.findIndex(b => b.userId === userId && b.chapterId === chapterId);
 
-    if (idx !== -1) {
-      bookmarks.splice(idx, 1);
-      setToStorage(STORAGE_KEYS.BOOKMARKS, bookmarks);
-      return false;
+    if (existingIdx !== -1) {
+      all.splice(existingIdx, 1);
+      setToStorage(STORAGE_KEYS.BOOKMARKS, all);
+      return false; // Removed
     } else {
-      bookmarks.unshift({
+      all.unshift({
         id: 'bm_' + Date.now(),
         userId,
         chapterId,
@@ -511,121 +556,179 @@ export const storageService = {
         headName,
         createdAt: new Date().toISOString(),
       });
-      setToStorage(STORAGE_KEYS.BOOKMARKS, bookmarks);
-      return true;
+      setToStorage(STORAGE_KEYS.BOOKMARKS, all);
+      return true; // Added
     }
   },
 
   isBookmarked(userId: string, chapterId: string): boolean {
-    const bookmarks = this.getBookmarks(userId);
-    return bookmarks.some(b => b.chapterId === chapterId);
+    const all = this.getBookmarks(userId);
+    return all.some(b => b.chapterId === chapterId);
   },
 
   // Calendar
   getCalendarEvents(userId: string): CalendarEvent[] {
-    const events = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
-    return events.filter(e => e.userId === userId);
+    const all = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
+    return all.filter(c => c.userId === userId);
   },
 
   createCalendarEvent(event: CalendarEvent): void {
-    const events = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
-    events.push(event);
-    setToStorage(STORAGE_KEYS.CALENDAR, events);
+    const all = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
+    all.push(event);
+    setToStorage(STORAGE_KEYS.CALENDAR, all);
   },
 
   updateCalendarEvent(eventId: string, updates: Partial<CalendarEvent>): void {
-    const events = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
-    const idx = events.findIndex(e => e.id === eventId);
+    const all = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
+    const idx = all.findIndex(e => e.id === eventId);
     if (idx !== -1) {
-      events[idx] = { ...events[idx], ...updates };
-      setToStorage(STORAGE_KEYS.CALENDAR, events);
+      all[idx] = { ...all[idx], ...updates };
+      setToStorage(STORAGE_KEYS.CALENDAR, all);
+    }
+  },
+
+  toggleCalendarEventCompleted(eventId: string): void {
+    const all = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
+    const evt = all.find(e => e.id === eventId);
+    if (evt) {
+      evt.isCompleted = !evt.isCompleted;
+      setToStorage(STORAGE_KEYS.CALENDAR, all);
     }
   },
 
   deleteCalendarEvent(eventId: string): void {
-    const events = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
-    setToStorage(STORAGE_KEYS.CALENDAR, events.filter(e => e.id !== eventId));
+    const all = getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []);
+    setToStorage(STORAGE_KEYS.CALENDAR, all.filter(e => e.id !== eventId));
+  },
+
+  // Daily Habits for MY DAY
+  getDailyHabits(userId: string): DailyHabit[] {
+    const all = getFromStorage<DailyHabit[]>(STORAGE_KEYS.HABITS, []);
+    const userHabits = all.filter(h => h.userId === userId);
+    if (userHabits.length === 0) {
+      // Seed default sustainable habits
+      const defaults: DailyHabit[] = [
+        { id: 'hab_1', userId, title: '90-min Focused Reading & Deconstruction', headId: 'head-01-knowledge', targetPerWeek: 5, completedDays: [], createdAt: new Date().toISOString() },
+        { id: 'hab_2', userId, title: 'Morning Retinal Daylight & Hydration Reset', headId: 'head-04-wellness', targetPerWeek: 7, completedDays: [], createdAt: new Date().toISOString() },
+        { id: 'hab_3', userId, title: 'Vocabulary Root Clustering (15 mins)', headId: 'head-02-language', targetPerWeek: 5, completedDays: [], createdAt: new Date().toISOString() },
+        { id: 'hab_4', userId, title: 'Chesterton Fence Problem Review in RAVANA MIND', headId: 'head-05-strategy', targetPerWeek: 3, completedDays: [], createdAt: new Date().toISOString() },
+      ];
+      setToStorage(STORAGE_KEYS.HABITS, [...all, ...defaults]);
+      return defaults;
+    }
+    return userHabits;
+  },
+
+  toggleDailyHabit(userId: string, habitId: string, date: string): void {
+    const all = getFromStorage<DailyHabit[]>(STORAGE_KEYS.HABITS, []);
+    const habit = all.find(h => h.id === habitId && h.userId === userId);
+    if (habit) {
+      if (habit.completedDays.includes(date)) {
+        habit.completedDays = habit.completedDays.filter(d => d !== date);
+      } else {
+        habit.completedDays.push(date);
+        this.addCredits(userId, 5, `Completed Habit: ${habit.title}`);
+      }
+      setToStorage(STORAGE_KEYS.HABITS, all);
+    }
   },
 
   // Credits
   getCredits(userId: string): { total: number; history: SanCreditRecord[] } {
-    const records = getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []);
-    const userRecords = records.filter(r => r.userId === userId);
-    const total = userRecords.reduce((acc, curr) => acc + curr.amount, 0);
-    return { total, history: userRecords.reverse() };
+    const all = getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []);
+    const userCreds = all.filter(c => c.userId === userId);
+    const total = userCreds.reduce((sum, c) => sum + c.amount, 0);
+    return { total, history: userCreds };
   },
 
   addCredits(userId: string, amount: number, action: string): void {
-    const records = getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []);
-    const newRecord: SanCreditRecord = {
+    const all = getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []);
+    all.unshift({
       id: 'cred_' + Date.now(),
       userId,
       amount,
       action,
       timestamp: new Date().toISOString(),
-    };
-    records.push(newRecord);
-    setToStorage(STORAGE_KEYS.CREDITS, records);
+    });
+    setToStorage(STORAGE_KEYS.CREDITS, all);
   },
 
-  // Ravana Mind Analyses
+  // RAVANA MIND
   getRavanaMindAnalyses(userId: string): RavanaMindAnalysis[] {
     const all = getFromStorage<RavanaMindAnalysis[]>(STORAGE_KEYS.RAVANA_MIND, []);
-    return all.filter(a => a.userId === userId);
+    return all.filter(r => r.userId === userId);
   },
 
   saveRavanaMindAnalysis(analysis: RavanaMindAnalysis): void {
     const all = getFromStorage<RavanaMindAnalysis[]>(STORAGE_KEYS.RAVANA_MIND, []);
-    const idx = all.findIndex(a => a.id === analysis.id);
-    if (idx !== -1) {
-      all[idx] = analysis;
-    } else {
-      all.unshift(analysis);
-    }
+    all.unshift(analysis);
     setToStorage(STORAGE_KEYS.RAVANA_MIND, all);
+    this.addCredits(analysis.userId, 25, 'Conducted Multi-Perspective Problem Decomposition in RAVANA MIND');
   },
 
-  // -----------------------------------------------------------
-  // MULTILINGUAL ROADMAPS
-  // -----------------------------------------------------------
-  getRoadmaps(userId: string): MultilingualRoadmap[] {
-    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
-    return all.filter(r => r.userId === userId);
+  // SAN R10 Conversations & Explicit Memory
+  getConversations(userId: string): ConversationSession[] {
+    const all = getFromStorage<ConversationSession[]>(STORAGE_KEYS.CONVERSATIONS, []);
+    return all.filter(c => c.userId === userId);
   },
 
-  saveRoadmap(roadmap: MultilingualRoadmap): void {
-    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
-    const idx = all.findIndex(r => r.id === roadmap.id);
+  saveConversation(session: ConversationSession): void {
+    const all = getFromStorage<ConversationSession[]>(STORAGE_KEYS.CONVERSATIONS, []);
+    const idx = all.findIndex(c => c.id === session.id);
     if (idx !== -1) {
-      all[idx] = roadmap;
+      all[idx] = session;
     } else {
-      all.unshift(roadmap);
+      all.unshift(session);
     }
-    setToStorage(STORAGE_KEYS.ROADMAPS, all);
+    setToStorage(STORAGE_KEYS.CONVERSATIONS, all);
   },
 
-  deleteRoadmap(roadmapId: string): void {
-    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
-    setToStorage(STORAGE_KEYS.ROADMAPS, all.filter(r => r.id !== roadmapId));
+  deleteConversation(sessionId: string): void {
+    const all = getFromStorage<ConversationSession[]>(STORAGE_KEYS.CONVERSATIONS, []);
+    setToStorage(STORAGE_KEYS.CONVERSATIONS, all.filter(c => c.id !== sessionId));
   },
 
-  // -----------------------------------------------------------
-  // CHAKRA SESSIONS & WELLNESS JOURNAL
-  // -----------------------------------------------------------
+  getUserMemories(userId: string): ExplicitUserMemory[] {
+    const all = getFromStorage<ExplicitUserMemory[]>(STORAGE_KEYS.EXPLICIT_MEMORY, []);
+    return all.filter(m => m.userId === userId);
+  },
+
+  addExplicitMemory(userId: string, topic: string, content: string): ExplicitUserMemory {
+    const all = getFromStorage<ExplicitUserMemory[]>(STORAGE_KEYS.EXPLICIT_MEMORY, []);
+    const newMem: ExplicitUserMemory = {
+      id: 'mem_' + Date.now(),
+      userId,
+      topic,
+      content,
+      isApproved: true,
+      createdAt: new Date().toISOString(),
+    };
+    all.unshift(newMem);
+    setToStorage(STORAGE_KEYS.EXPLICIT_MEMORY, all);
+    return newMem;
+  },
+
+  deleteExplicitMemory(memoryId: string): void {
+    const all = getFromStorage<ExplicitUserMemory[]>(STORAGE_KEYS.EXPLICIT_MEMORY, []);
+    setToStorage(STORAGE_KEYS.EXPLICIT_MEMORY, all.filter(m => m.id !== memoryId));
+  },
+
+  // CHAKRA Sessions & Wellness Journal
   getChakraSessions(userId: string): ChakraSession[] {
     const all = getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []);
-    return all.filter(s => s.userId === userId);
+    return all.filter(cs => cs.userId === userId);
   },
 
   saveChakraSession(session: ChakraSession): void {
     const all = getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []);
     all.unshift(session);
     setToStorage(STORAGE_KEYS.CHAKRA_SESSIONS, all);
+    this.addCredits(session.userId, 15, `Completed Chakra Mindfulness Session`);
   },
 
   getWellnessEntries(userId: string): WellnessJournalEntry[] {
     const all = getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []);
-    return all.filter(e => e.userId === userId);
+    return all.filter(w => w.userId === userId);
   },
 
   saveWellnessEntry(entry: WellnessJournalEntry): void {
@@ -636,33 +739,91 @@ export const storageService = {
 
   deleteWellnessEntry(entryId: string): void {
     const all = getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []);
-    setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, all.filter(e => e.id !== entryId));
+    setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, all.filter(w => w.id !== entryId));
   },
 
-  // -----------------------------------------------------------
-  // DATA SOVEREIGNTY: EXPORT & ACCOUNT CLOSURE
-  // -----------------------------------------------------------
-  exportUserData(userId: string): Record<string, any> {
+  // Roadmaps
+  getRoadmaps(userId: string): MultilingualRoadmap[] {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    return all.filter(r => r.userId === userId);
+  },
+
+  saveRoadmap(roadmap: MultilingualRoadmap): void {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    all.unshift(roadmap);
+    setToStorage(STORAGE_KEYS.ROADMAPS, all);
+  },
+
+  deleteRoadmap(roadmapId: string): void {
+    const all = getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []);
+    setToStorage(STORAGE_KEYS.ROADMAPS, all.filter(r => r.id !== roadmapId));
+  },
+
+  // Admin Studio: Content Drafts & Publishing
+  getContentDrafts(): ContentDraft[] {
+    return getFromStorage<ContentDraft[]>(STORAGE_KEYS.ADMIN_DRAFTS, []);
+  },
+
+  saveContentDraft(draft: ContentDraft): void {
+    const all = getFromStorage<ContentDraft[]>(STORAGE_KEYS.ADMIN_DRAFTS, []);
+    const idx = all.findIndex(d => d.id === draft.id);
+    if (idx !== -1) {
+      all[idx] = draft;
+    } else {
+      all.unshift(draft);
+    }
+    setToStorage(STORAGE_KEYS.ADMIN_DRAFTS, all);
+  },
+
+  // Audit Logs
+  getAuditLogs(): AuditLogEntry[] {
+    return getFromStorage<AuditLogEntry[]>(STORAGE_KEYS.AUDIT_LOGS, []);
+  },
+
+  recordAuditLog(actorId: string, actorEmail: string, actorRole: UserRole, action: string, resourceType: string, details?: string, resourceId?: string): void {
+    const all = getFromStorage<AuditLogEntry[]>(STORAGE_KEYS.AUDIT_LOGS, []);
+    const entry: AuditLogEntry = {
+      id: 'aud_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+      timestamp: new Date().toISOString(),
+      actorId,
+      actorEmail,
+      actorRole,
+      action,
+      resourceType,
+      resourceId,
+      details,
+      ipAddress: '127.0.0.1',
+    };
+    all.unshift(entry);
+    if (all.length > 500) all.pop();
+    setToStorage(STORAGE_KEYS.AUDIT_LOGS, all);
+  },
+
+  // Full Data Export with Formula Injection Sanitization
+  exportUserData(userId: string): any {
     const user = this.getAccounts().find(a => a.id === userId);
     const profile = this.getProfile(userId);
     const progress = this.getProgress(userId);
     const notes = this.getNotes(userId);
     const bookmarks = this.getBookmarks(userId);
     const calendar = this.getCalendarEvents(userId);
+    const habits = this.getDailyHabits(userId);
     const credits = this.getCredits(userId);
     const ravanaMind = this.getRavanaMindAnalyses(userId);
     const roadmaps = this.getRoadmaps(userId);
     const chakraSessions = this.getChakraSessions(userId);
     const wellness = this.getWellnessEntries(userId);
+    const conversations = this.getConversations(userId);
+    const memories = this.getUserMemories(userId);
 
-    // Filter out password hash and secrets
     const safeUser = user ? { ...user, passwordHash: undefined } : null;
 
     return {
       metadata: {
-        system: 'SAN_R-10 DASASURYA AI',
+        platform: 'DASASURYA',
+        aiBrain: 'SAN R10',
         exportedAt: new Date().toISOString(),
-        version: '2026.1',
+        version: '10.0-production',
       },
       user: safeUser,
       profile,
@@ -670,16 +831,18 @@ export const storageService = {
       notes,
       bookmarks,
       calendar,
+      habits,
       credits,
       ravanaMind,
       roadmaps,
       chakraSessions,
       wellnessJournal: wellness,
+      conversations,
+      memories,
     };
   },
 
   deleteAccount(userId: string): void {
-    // Purge across all data stores
     setToStorage(STORAGE_KEYS.ACCOUNTS, this.getAccounts().filter(a => a.id !== userId));
 
     const profiles = getFromStorage<Record<string, UserProfile>>(STORAGE_KEYS.PROFILES, {});
@@ -693,11 +856,14 @@ export const storageService = {
     setToStorage(STORAGE_KEYS.NOTES, getFromStorage<UserNote[]>(STORAGE_KEYS.NOTES, []).filter(n => n.userId !== userId));
     setToStorage(STORAGE_KEYS.BOOKMARKS, getFromStorage<Bookmark[]>(STORAGE_KEYS.BOOKMARKS, []).filter(b => b.userId !== userId));
     setToStorage(STORAGE_KEYS.CALENDAR, getFromStorage<CalendarEvent[]>(STORAGE_KEYS.CALENDAR, []).filter(c => c.userId !== userId));
+    setToStorage(STORAGE_KEYS.HABITS, getFromStorage<DailyHabit[]>(STORAGE_KEYS.HABITS, []).filter(h => h.userId !== userId));
     setToStorage(STORAGE_KEYS.CREDITS, getFromStorage<SanCreditRecord[]>(STORAGE_KEYS.CREDITS, []).filter(cr => cr.userId !== userId));
     setToStorage(STORAGE_KEYS.RAVANA_MIND, getFromStorage<RavanaMindAnalysis[]>(STORAGE_KEYS.RAVANA_MIND, []).filter(r => r.userId !== userId));
     setToStorage(STORAGE_KEYS.ROADMAPS, getFromStorage<MultilingualRoadmap[]>(STORAGE_KEYS.ROADMAPS, []).filter(rm => rm.userId !== userId));
     setToStorage(STORAGE_KEYS.CHAKRA_SESSIONS, getFromStorage<ChakraSession[]>(STORAGE_KEYS.CHAKRA_SESSIONS, []).filter(cs => cs.userId !== userId));
     setToStorage(STORAGE_KEYS.WELLNESS_JOURNAL, getFromStorage<WellnessJournalEntry[]>(STORAGE_KEYS.WELLNESS_JOURNAL, []).filter(w => w.userId !== userId));
+    setToStorage(STORAGE_KEYS.CONVERSATIONS, getFromStorage<ConversationSession[]>(STORAGE_KEYS.CONVERSATIONS, []).filter(c => c.userId !== userId));
+    setToStorage(STORAGE_KEYS.EXPLICIT_MEMORY, getFromStorage<ExplicitUserMemory[]>(STORAGE_KEYS.EXPLICIT_MEMORY, []).filter(m => m.userId !== userId));
 
     if (this.getActiveUser()?.id === userId) {
       this.setActiveSession(null);
